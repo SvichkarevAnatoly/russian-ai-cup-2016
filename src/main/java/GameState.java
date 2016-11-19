@@ -16,6 +16,8 @@ public class GameState {
     public boolean isUnderTowerAttack;
     public boolean isUnderWizardAttack;
 
+    public boolean wasUnderAttack;
+
     public boolean canBeUnderAttack;
     public boolean canBeUnderTowerAttack;
     public boolean canBeUnderWizardAttack;

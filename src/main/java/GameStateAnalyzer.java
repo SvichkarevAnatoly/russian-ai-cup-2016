@@ -1,5 +1,7 @@
 import model.*;
 
+import java.util.List;
+
 public class GameStateAnalyzer {
     private Wizard self;
     private World world;
@@ -28,6 +30,21 @@ public class GameStateAnalyzer {
             initIsLowHP();
             initCanNotMove(history);
             initIsUnderAttack(history);
+            initWasUnderAttack(history);
+        }
+    }
+
+    private void initWasUnderAttack(History history) {
+        if (history.size() < Const.WAS_ATTACK_TIME) {
+            return;
+        }
+
+        final List<GameState> lastGameStates = history.getLastGameStates(Const.WAS_ATTACK_TIME);
+        for (GameState state : lastGameStates) {
+            if (state.isUnderAttack) {
+                gameState.wasUnderAttack = true;
+                return;
+            }
         }
     }
 
@@ -39,6 +56,10 @@ public class GameStateAnalyzer {
         final WizardParams preWizardParams = history.getPreviousWizardParams();
         if (self.getLife() < preWizardParams.hp) {
             gameState.isUnderAttack = true;
+
+            final Faction enemyFaction = new Params(self).enemy;
+            final Enemies enemies = new Enemies(world, enemyFaction);
+            history.getOtherState().lastEnemy = enemies.getNearest(self);
         }
     }
 

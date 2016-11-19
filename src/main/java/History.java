@@ -1,3 +1,9 @@
+import model.LivingUnit;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 public class History {
     private static final int CAPACITY = 100;
 
@@ -15,6 +21,10 @@ public class History {
         return states.getLast().wizardParams;
     }
 
+    public OtherState getOtherState() {
+        return states.getLast().otherState;
+    }
+
     public GameState getPreviousGameState() {
         return states.get(states.size() - 2).gameState;
     }
@@ -29,5 +39,27 @@ public class History {
 
     public int size() {
         return states.size();
+    }
+
+    public List<GameState> getLastGameStates(int size) {
+        final int fromIndex = states.size() - size;
+        final int toIndex = states.size();
+        final List<StateShot> lastStateShots = states.subList(fromIndex, toIndex);
+        final List<GameState> lastGameStates = new ArrayList<>();
+        for (StateShot lastStateShot : lastStateShots) {
+            lastGameStates.add(lastStateShot.gameState);
+        }
+        return lastGameStates;
+    }
+
+    public LivingUnit getLastEnemy() {
+        final Iterator<StateShot> iterator = states.descendingIterator();
+        while (iterator.hasNext()) {
+            final LivingUnit lastEnemy = iterator.next().otherState.lastEnemy;
+            if (lastEnemy != null) {
+                return lastEnemy;
+            }
+        }
+        return null;
     }
 }

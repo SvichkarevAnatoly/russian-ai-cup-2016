@@ -37,12 +37,7 @@ public class Moving {
         double angle = self.getAngleTo(point.getX(), point.getY());
 
         move.setTurn(angle);
-
-        if (StrictMath.abs(angle) < game.getStaffSector() / 4.0D) {
-            move.setSpeed(-game.getWizardBackwardSpeed());
-        } else {
-            gameState.isOnlyTurning = true;
-        }
+        move.setSpeed(-game.getWizardBackwardSpeed());
     }
 
     public void goSomewhere() {
