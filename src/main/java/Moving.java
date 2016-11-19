@@ -16,7 +16,7 @@ public class Moving {
     /**
      * Простейший способ перемещения волшебника.
      */
-    public void goTo(Point2D point) {
+    public void goTo(Point point) {
         double angle = self.getAngleTo(point.getX(), point.getY());
 
         move.setTurn(angle);

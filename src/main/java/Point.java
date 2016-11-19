@@ -3,11 +3,11 @@ import model.Unit;
 /**
  * Вспомогательный класс для хранения позиций на карте.
  */
-final class Point2D {
+final class Point {
     private final double x;
     private final double y;
 
-    public Point2D(double x, double y) {
+    public Point(double x, double y) {
         this.x = x;
         this.y = y;
     }
@@ -24,7 +24,7 @@ final class Point2D {
         return StrictMath.hypot(this.x - x, this.y - y);
     }
 
-    public double getDistanceTo(Point2D point) {
+    public double getDistanceTo(Point point) {
         return getDistanceTo(point.x, point.y);
     }
 

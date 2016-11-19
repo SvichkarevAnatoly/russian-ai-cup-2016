@@ -27,13 +27,13 @@ public class GlobalMoving {
      * Дополнительно проверяем, не находится ли волшебник достаточно близко к какой-либо из ключевых точек. Если это
      * так, то мы сразу возвращаем следующую ключевую точку.
      */
-    public Point2D getNextWaypoint() {
-        final Point2D[] waypoints = waypointsByLane.get(lane);
+    public Point getNextWaypoint() {
+        final Point[] waypoints = waypointsByLane.get(lane);
         int lastWaypointIndex = waypoints.length - 1;
-        Point2D lastWaypoint = waypoints[lastWaypointIndex];
+        Point lastWaypoint = waypoints[lastWaypointIndex];
 
         for (int waypointIndex = 0; waypointIndex < lastWaypointIndex; ++waypointIndex) {
-            Point2D waypoint = waypoints[waypointIndex];
+            Point waypoint = waypoints[waypointIndex];
 
             if (waypoint.getDistanceTo(self) <= WAYPOINT_RADIUS) {
                 return waypoints[waypointIndex + 1];
@@ -51,12 +51,12 @@ public class GlobalMoving {
      * Действие данного метода абсолютно идентично действию метода {@code getNextWaypoint}, если перевернуть массив
      * {@code waypoints}.
      */
-    public Point2D getPreviousWaypoint() {
-        final Point2D[] waypoints = waypointsByLane.get(lane);
-        Point2D firstWaypoint = waypoints[0];
+    public Point getPreviousWaypoint() {
+        final Point[] waypoints = waypointsByLane.get(lane);
+        Point firstWaypoint = waypoints[0];
 
         for (int waypointIndex = waypoints.length - 1; waypointIndex > 0; --waypointIndex) {
-            Point2D waypoint = waypoints[waypointIndex];
+            Point waypoint = waypoints[waypointIndex];
 
             if (waypoint.getDistanceTo(self) <= WAYPOINT_RADIUS) {
                 return waypoints[waypointIndex - 1];
