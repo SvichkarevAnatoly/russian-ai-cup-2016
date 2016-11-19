@@ -9,10 +9,10 @@ import java.util.List;
 public class Enemies extends LivingUnits {
     protected List<LivingUnit> enemies = new ArrayList<>();
 
-    public Enemies(World world, Faction enemyFaction) {
+    public Enemies(World world, Faction enemy) {
         super(world);
         for (LivingUnit unit : units) {
-            if (unit.getFaction() == enemyFaction) {
+            if (unit.getFaction() == enemy) {
                 enemies.add(unit);
             }
         }

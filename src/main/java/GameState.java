@@ -16,6 +16,10 @@ public class GameState {
     public boolean isUnderTowerAttack;
     public boolean isUnderWizardAttack;
 
+    public boolean canBeUnderAttack;
+    public boolean canBeUnderTowerAttack;
+    public boolean canBeUnderWizardAttack;
+
     public boolean hasNearFriendWizard;
     public boolean hasNearMoreThan2FriendWizard;
     public boolean hasNearFriendMinions;

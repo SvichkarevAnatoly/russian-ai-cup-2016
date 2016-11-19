@@ -12,6 +12,11 @@ final class Point {
         this.y = y;
     }
 
+    public Point(Unit unit) {
+        x = unit.getX();
+        y = unit.getY();
+    }
+
     public double getX() {
         return x;
     }

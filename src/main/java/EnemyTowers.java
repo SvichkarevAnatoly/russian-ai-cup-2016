@@ -30,4 +30,13 @@ public class EnemyTowers extends Enemies {
         }
         return nearest;
     }
+
+    public boolean isInRange(Wizard self) {
+        for (Building tower : towers) {
+            if (self.getDistanceTo(tower) <= tower.getAttackRange() + Const.WARNING_DIST) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
