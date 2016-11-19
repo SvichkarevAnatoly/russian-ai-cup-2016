@@ -12,6 +12,7 @@ public final class MyStrategy implements Strategy {
 
     private Random random;
     private GlobalMoving globalMoving;
+    private Moving moving;
 
     /**
      * Основной метод стратегии, осуществляющий управление волшебником.
@@ -27,13 +28,9 @@ public final class MyStrategy implements Strategy {
         initializeTick(self, world, game, move);
         initializeStrategy();
 
-        // Постоянно двигаемся из-стороны в сторону, чтобы по нам было сложнее попасть.
-        // Считаете, что сможете придумать более эффективный алгоритм уклонения? Попробуйте! ;)
-        move.setStrafeSpeed(random.nextBoolean() ? game.getWizardStrafeSpeed() : -game.getWizardStrafeSpeed());
-
         // Если осталось мало жизненной энергии, отступаем к предыдущей ключевой точке на линии.
         if (self.getLife() < self.getMaxLife() * LOW_HP_FACTOR) {
-            goTo(globalMoving.getPreviousWaypoint());
+            moving.goTo(globalMoving.getPreviousWaypoint());
             return;
         }
 
@@ -63,7 +60,7 @@ public final class MyStrategy implements Strategy {
         }
 
         // Если нет других действий, просто продвигаемся вперёд.
-        goTo(globalMoving.getNextWaypoint());
+        moving.goTo(globalMoving.getNextWaypoint());
     }
 
     /**
@@ -85,20 +82,9 @@ public final class MyStrategy implements Strategy {
     private void initializeStrategy() {
         random = random == null ?
                 new Random(game.getRandomSeed()) : random;
+
         globalMoving = new GlobalMoving(self, game);
-    }
-
-    /**
-     * Простейший способ перемещения волшебника.
-     */
-    private void goTo(Point2D point) {
-        double angle = self.getAngleTo(point.getX(), point.getY());
-
-        move.setTurn(angle);
-
-        if (StrictMath.abs(angle) < game.getStaffSector() / 4.0D) {
-            move.setSpeed(game.getWizardForwardSpeed());
-        }
+        moving = new Moving(self, move, game);
     }
 
     /**
