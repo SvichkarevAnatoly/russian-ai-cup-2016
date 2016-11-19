@@ -7,18 +7,10 @@ public final class MyStrategy implements Strategy {
 
     private static final double LOW_HP_FACTOR = 0.25D;
 
-    /**
-     * Ключевые точки для каждой линии, позволяющие упростить управление перемещением волшебника.
-     * <p>
-     * Если всё хорошо, двигаемся к следующей точке и атакуем противников.
-     * Если осталось мало жизненной энергии, отступаем к предыдущей точке.
-     */
-    private final Map<LaneType, Point2D[]> waypointsByLane = new EnumMap<>(LaneType.class);
-
     private Random random;
 
+    private WaypointsByLane waypointsByLane;
     private LaneType lane;
-    private Point2D[] waypoints;
 
     private Wizard self;
     private World world;
@@ -36,7 +28,7 @@ public final class MyStrategy implements Strategy {
      */
     @Override
     public void move(Wizard self, World world, Game game, Move move) {
-        initializeStrategy(self, game);
+        initializeStrategy(game);
         initializeTick(self, world, game, move);
 
         // Постоянно двигаемся из-стороны в сторону, чтобы по нам было сложнее попасть.
@@ -84,80 +76,15 @@ public final class MyStrategy implements Strategy {
      * Для этих целей обычно можно использовать конструктор, однако в данном случае мы хотим инициализировать генератор
      * случайных чисел значением, полученным от симулятора игры.
      */
-    private void initializeStrategy(Wizard self, Game game) {
+    private void initializeStrategy(Game game) {
         if (random == null) {
             random = new Random(game.getRandomSeed());
 
-            double mapSize = game.getMapSize();
+            waypointsByLane = waypointsByLane == null ?
+                    new WaypointsByLane(game.getMapSize()) :
+                    waypointsByLane;
 
-            waypointsByLane.put(LaneType.MIDDLE, new Point2D[]{
-                    new Point2D(100.0D, mapSize - 100.0D),
-                    random.nextBoolean()
-                            ? new Point2D(600.0D, mapSize - 200.0D)
-                            : new Point2D(200.0D, mapSize - 600.0D),
-                    new Point2D(800.0D, mapSize - 800.0D),
-                    new Point2D(mapSize - 600.0D, 600.0D)
-            });
-
-            waypointsByLane.put(LaneType.TOP, new Point2D[]{
-                    new Point2D(100.0D, mapSize - 100.0D),
-                    new Point2D(100.0D, mapSize - 400.0D),
-                    new Point2D(200.0D, mapSize - 800.0D),
-                    new Point2D(200.0D, mapSize * 0.75D),
-                    new Point2D(200.0D, mapSize * 0.5D),
-                    new Point2D(200.0D, mapSize * 0.25D),
-                    new Point2D(200.0D, 200.0D),
-                    new Point2D(mapSize * 0.25D, 200.0D),
-                    new Point2D(mapSize * 0.5D, 200.0D),
-                    new Point2D(mapSize * 0.75D, 200.0D),
-                    new Point2D(mapSize - 200.0D, 200.0D)
-            });
-
-            waypointsByLane.put(LaneType.BOTTOM, new Point2D[]{
-                    new Point2D(100.0D, mapSize - 100.0D),
-                    new Point2D(400.0D, mapSize - 100.0D),
-                    new Point2D(800.0D, mapSize - 200.0D),
-                    new Point2D(mapSize * 0.25D, mapSize - 200.0D),
-                    new Point2D(mapSize * 0.5D, mapSize - 200.0D),
-                    new Point2D(mapSize * 0.75D, mapSize - 200.0D),
-                    new Point2D(mapSize - 200.0D, mapSize - 200.0D),
-                    new Point2D(mapSize - 200.0D, mapSize * 0.75D),
-                    new Point2D(mapSize - 200.0D, mapSize * 0.5D),
-                    new Point2D(mapSize - 200.0D, mapSize * 0.25D),
-                    new Point2D(mapSize - 200.0D, 200.0D)
-            });
-
-            switch ((int) self.getId()) {
-                case 1:
-                case 2:
-                case 6:
-                case 7:
-                    lane = LaneType.TOP;
-                    break;
-                case 3:
-                case 8:
-                    lane = LaneType.MIDDLE;
-                    break;
-                case 4:
-                case 5:
-                case 9:
-                case 10:
-                    lane = LaneType.BOTTOM;
-                    break;
-                default:
-            }
-
-            waypoints = waypointsByLane.get(lane);
-
-            // Наша стратегия исходит из предположения, что заданные нами ключевые точки упорядочены по убыванию
-            // дальности до последней ключевой точки. Сейчас проверка этого факта отключена, однако вы можете
-            // написать свою проверку, если решите изменить координаты ключевых точек.
-
-            /*Point2D lastWaypoint = waypoints[waypoints.length - 1];
-
-            Preconditions.checkState(ArrayUtils.isSorted(waypoints, (waypointA, waypointB) -> Double.compare(
-                    waypointB.getDistanceTo(lastWaypoint), waypointA.getDistanceTo(lastWaypoint)
-            )));*/
+            lane = lane == null ? LaneType.MIDDLE : lane;
         }
     }
 
@@ -180,6 +107,7 @@ public final class MyStrategy implements Strategy {
      * так, то мы сразу возвращаем следующую ключевую точку.
      */
     private Point2D getNextWaypoint() {
+        final Point2D[] waypoints = waypointsByLane.get(lane);
         int lastWaypointIndex = waypoints.length - 1;
         Point2D lastWaypoint = waypoints[lastWaypointIndex];
 
@@ -203,6 +131,7 @@ public final class MyStrategy implements Strategy {
      * {@code waypoints}.
      */
     private Point2D getPreviousWaypoint() {
+        final Point2D[] waypoints = waypointsByLane.get(lane);
         Point2D firstWaypoint = waypoints[0];
 
         for (int waypointIndex = waypoints.length - 1; waypointIndex > 0; --waypointIndex) {
