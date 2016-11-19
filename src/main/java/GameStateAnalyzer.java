@@ -24,19 +24,24 @@ public class GameStateAnalyzer {
     }
 
     private void initSelf(History history) {
-        initIsLowHP();
-        initCanNotMove(history);
+        if (!initIsNotAlive()) {
+            initIsLowHP();
+            initCanNotMove(history);
+        }
     }
 
     private void initCanNotMove(History history) {
-        if (history.isEmpty()) {
+        if (history.size() < 2) {
             return;
         }
 
-        final WizardParams wizardParams = history.getWizardParams();
-        final Point point = wizardParams.point;
-        if (gameState.isMoving && !gameState.isOnlyTurning && point.getDistanceTo(self) < Const.DIST_EPS) {
-            gameState.canNotMove = true;
+        final GameState preGameState = history.getPreviousGameState();
+        if (preGameState.isMoving && !preGameState.isOnlyTurning) {
+            final WizardParams wizardParams = history.getWizardParams();
+            final Point point = wizardParams.point;
+            if (point.getDistanceTo(self) < Const.DIST_EPS) {
+                gameState.canNotMove = true;
+            }
         }
     }
 
@@ -44,7 +49,7 @@ public class GameStateAnalyzer {
         final EnemyAnalysis enemyAnalysis = new EnemyAnalysis(self, world);
         final LivingUnit nearestEnemy = enemyAnalysis.getNearestEnemy();
         if (nearestEnemy != null) {
-            gameState.hasNearEnemy = true;
+            gameState.hasEnemy = true;
             final Attack attack = new Attack(self, game);
             if (attack.canAttack(nearestEnemy)) {
                 gameState.canAttack = true;
@@ -54,6 +59,13 @@ public class GameStateAnalyzer {
 
     private void initFriend() {
 
+    }
+
+    private boolean initIsNotAlive() {
+        if (self.getLife() == 0) {
+            gameState.isNotAlive = true;
+        }
+        return gameState.isNotAlive;
     }
 
     private void initIsLowHP() {

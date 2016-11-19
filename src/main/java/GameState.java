@@ -1,9 +1,10 @@
 public class GameState {
     public boolean isLowHP;
+    public boolean isNotAlive;
 
     public boolean canNotMove;
 
-    public boolean hasNearEnemy;
+    public boolean hasEnemy;
     public boolean hasNearEnemyWizard;
     public boolean hasNearEnemyMinions;
 

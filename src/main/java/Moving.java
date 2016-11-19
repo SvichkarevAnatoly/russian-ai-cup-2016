@@ -34,7 +34,7 @@ public class Moving {
     }
 
     public void goSomewhere() {
-        final Random random = new Random(game.getRandomSeed());
+        final Random random = new Random();
 
         if (random.nextBoolean()) {
             move.setStrafeSpeed(game.getWizardStrafeSpeed());

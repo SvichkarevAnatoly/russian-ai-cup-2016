@@ -17,18 +17,22 @@ public class MoveBuilder {
         this.history = history;
     }
 
-    public Move build() {
+    public void build() {
         final GameState gameState = history.getGameState();
 
         final GlobalMoving globalMoving = new GlobalMoving(self, game);
         final Moving moving = new Moving(self, move, game, gameState);
         final EnemyAnalysis enemyAnalysis = new EnemyAnalysis(self, world);
 
+        if (gameState.isNotAlive){
+            return;
+        }
+
         if(gameState.canNotMove) {
             moving.goSomewhere();
         } else if (gameState.isLowHP) {
             moving.goTo(globalMoving.getPreviousWaypoint());
-        } else if (gameState.hasNearEnemy) {
+        } else if (gameState.canAttack) {
             final LivingUnit nearestTarget = enemyAnalysis.getNearestEnemy();
             final Attack attack = new Attack(self, game);
             attack.getMove(move, nearestTarget);
@@ -36,7 +40,5 @@ public class MoveBuilder {
             // Если нет других действий, просто продвигаемся вперёд.
             moving.goToNextWaypoint(globalMoving.getNextWaypoint());
         }
-
-        return move;
     }
 }

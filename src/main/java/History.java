@@ -1,9 +1,7 @@
-import java.util.Deque;
-
 public class History {
     private static final int CAPACITY = 100;
 
-    private Deque<StateShot> states = new FixedSizeLinkedList<>(CAPACITY);
+    private FixedSizeLinkedList<StateShot> states = new FixedSizeLinkedList<>(CAPACITY);
 
     public void add(StateShot stateShot) {
         states.add(stateShot);
@@ -15,6 +13,10 @@ public class History {
 
     public WizardParams getWizardParams() {
         return states.getLast().wizardParams;
+    }
+
+    public GameState getPreviousGameState() {
+        return states.get(states.size() - 2).gameState;
     }
 
     public boolean isEmpty() {
