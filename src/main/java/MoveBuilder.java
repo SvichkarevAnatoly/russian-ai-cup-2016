@@ -32,6 +32,10 @@ public class MoveBuilder {
             moving.goSomewhere();
         } else if (gameState.isLowHP) {
             moving.goTo(globalMoving.getPreviousWaypoint());
+        } else if (gameState.isUnderAttack) {
+            final Enemies enemies = new Enemies(world, params.enemy);
+            final LivingUnit nearestEnemy = enemies.getNearest(self);
+            moving.goOpposite(new Point(nearestEnemy));
         } else if (gameState.canBeUnderTowerAttack){
             final LivingUnit nearestTower = new EnemyTowers(world, params.enemy).getNearest(self);
             moving.goOpposite(new Point(nearestTower));

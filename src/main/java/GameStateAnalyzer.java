@@ -27,6 +27,18 @@ public class GameStateAnalyzer {
         if (!initIsNotAlive()) {
             initIsLowHP();
             initCanNotMove(history);
+            initIsUnderAttack(history);
+        }
+    }
+
+    private void initIsUnderAttack(History history) {
+        if (history.size() < 2) {
+            return;
+        }
+
+        final WizardParams preWizardParams = history.getPreviousWizardParams();
+        if (self.getLife() < preWizardParams.hp) {
+            gameState.isUnderAttack = true;
         }
     }
 
