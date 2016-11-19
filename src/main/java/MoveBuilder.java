@@ -21,11 +21,12 @@ public class MoveBuilder {
         final GameState gameState = history.getGameState();
 
         final GlobalMoving globalMoving = new GlobalMoving(self, game);
-        final Moving moving = new Moving(self, move, game);
+        final Moving moving = new Moving(self, move, game, gameState);
         final EnemyAnalysis enemyAnalysis = new EnemyAnalysis(self, world);
 
-        // Если осталось мало жизненной энергии, отступаем к предыдущей ключевой точке на линии.
-        if (gameState.isLowHP) {
+        if(gameState.canNotMove) {
+            moving.goSomewhere();
+        } else if (gameState.isLowHP) {
             moving.goTo(globalMoving.getPreviousWaypoint());
         } else if (gameState.hasNearEnemy) {
             final LivingUnit nearestTarget = enemyAnalysis.getNearestEnemy();
@@ -33,7 +34,7 @@ public class MoveBuilder {
             attack.getMove(move, nearestTarget);
         } else {
             // Если нет других действий, просто продвигаемся вперёд.
-            moving.goTo(globalMoving.getNextWaypoint());
+            moving.goToNextWaypoint(globalMoving.getNextWaypoint());
         }
 
         return move;

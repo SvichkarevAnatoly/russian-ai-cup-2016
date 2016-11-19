@@ -21,4 +21,10 @@ public class GameState {
 
     public boolean hasEnemyTowerLowHP;
     public boolean hasFriendTowerLowHP;
+
+
+    public boolean isAttacking;
+    public boolean isMoving;
+    public boolean isOnlyTurning;
+    public boolean isRescueing;
 }

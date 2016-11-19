@@ -2,15 +2,20 @@ import model.Game;
 import model.Move;
 import model.Wizard;
 
-public class Moving {
-    private Wizard self;
-    private Move move;
-    private Game game;
+import java.util.Random;
 
-    public Moving(Wizard self, Move move, Game game) {
+public class Moving {
+    private final Wizard self;
+    private final Move move;
+    private final Game game;
+
+    private final GameState gameState;
+
+    public Moving(Wizard self, Move move, Game game, GameState gameState) {
         this.self = self;
         this.move = move;
         this.game = game;
+        this.gameState = gameState;
     }
 
     /**
@@ -23,6 +28,29 @@ public class Moving {
 
         if (StrictMath.abs(angle) < game.getStaffSector() / 4.0D) {
             move.setSpeed(game.getWizardForwardSpeed());
+        } else {
+            gameState.isOnlyTurning = true;
         }
+    }
+
+    public void goSomewhere() {
+        final Random random = new Random(game.getRandomSeed());
+
+        if (random.nextBoolean()) {
+            move.setStrafeSpeed(game.getWizardStrafeSpeed());
+        } else {
+            move.setStrafeSpeed(-game.getWizardStrafeSpeed());
+        }
+
+        if (random.nextBoolean()) {
+            move.setSpeed(game.getWizardForwardSpeed());
+        } else {
+            move.setSpeed(-game.getWizardBackwardSpeed());
+        }
+    }
+
+    public void goToNextWaypoint(Point nextWaypoint) {
+        gameState.isMoving = true;
+        goTo(nextWaypoint);
     }
 }
