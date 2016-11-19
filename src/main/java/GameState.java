@@ -8,6 +8,8 @@ public class GameState {
     public boolean hasNearEnemyWizard;
     public boolean hasNearEnemyMinions;
 
+    public boolean hasMoreThanOneEnemy;
+
     public boolean canAttack;
     public boolean canAttackWizard;
     public boolean canAttackMinions;

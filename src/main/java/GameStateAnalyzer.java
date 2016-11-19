@@ -84,6 +84,10 @@ public class GameStateAnalyzer {
         initCanBeUnderAttack(params);
 
         final Enemies enemies = new Enemies(world, params.enemy);
+        if (enemies.enemies.size() > 1) {
+            gameState.hasMoreThanOneEnemy = true;
+        }
+
         final LivingUnit nearestEnemy = enemies.getNearest(self);
         if (nearestEnemy != null) {
             gameState.hasEnemy = true;

@@ -3,8 +3,7 @@ import model.LivingUnit;
 import model.Wizard;
 import model.World;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Enemies extends LivingUnits {
     protected List<LivingUnit> enemies = new ArrayList<>();
@@ -32,5 +31,26 @@ public class Enemies extends LivingUnits {
             }
         }
         return nearest;
+    }
+
+    public void sortMostInjured() {
+        Collections.sort(enemies, new Comparator<LivingUnit>() {
+            @Override
+            public int compare(LivingUnit o1, LivingUnit o2) {
+                final double o1rate = (double) o1.getLife() / o1.getMaxLife();
+                final double o2rate = (double) o2.getLife() / o2.getMaxLife();
+                return Double.compare(o1rate, o2rate);
+            }
+        });
+    }
+
+    public LivingUnit getFirstInRange(Wizard self) {
+        for (LivingUnit enemy : enemies) {
+            double distance = self.getDistanceTo(enemy);
+            if (distance <= self.getCastRange()) {
+                return enemy;
+            }
+        }
+        return null;
     }
 }
