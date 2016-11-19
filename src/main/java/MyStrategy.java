@@ -35,33 +35,14 @@ public final class MyStrategy implements Strategy {
             return;
         }
 
-        LivingUnit nearestTarget = enemyAnalysis.getNearestTarget();
-
-        // Если видим противника ...
-        if (nearestTarget != null) {
-            double distance = self.getDistanceTo(nearestTarget);
-
-            // ... и он в пределах досягаемости наших заклинаний, ...
-            if (distance <= self.getCastRange()) {
-                double angle = self.getAngleTo(nearestTarget);
-
-                // ... то поворачиваемся к цели.
-                move.setTurn(angle);
-
-                // Если цель перед нами, ...
-                if (StrictMath.abs(angle) < game.getStaffSector() / 2.0D) {
-                    // ... то атакуем.
-                    move.setAction(ActionType.MAGIC_MISSILE);
-                    move.setCastAngle(angle);
-                    move.setMinCastDistance(distance - nearestTarget.getRadius() + game.getMagicMissileRadius());
-                }
-
-                return;
-            }
+        final LivingUnit nearestTarget = enemyAnalysis.getNearestTarget();
+        final Attack attack = new Attack(self, game);
+        if (attack.canAttack(nearestTarget)) {
+            attack.getMove(move, nearestTarget);
+        } else {
+            // Если нет других действий, просто продвигаемся вперёд.
+            moving.goTo(globalMoving.getNextWaypoint());
         }
-
-        // Если нет других действий, просто продвигаемся вперёд.
-        moving.goTo(globalMoving.getNextWaypoint());
     }
 
     /**
