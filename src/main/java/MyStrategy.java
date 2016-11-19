@@ -8,6 +8,8 @@ public final class MyStrategy implements Strategy {
     private Game game;
     private Move move;
 
+    private History history;
+
     private Random random;
     private GlobalMoving globalMoving;
     private Moving moving;
@@ -27,12 +29,12 @@ public final class MyStrategy implements Strategy {
         initializeTick(self, world, game, move);
         initializeStrategy();
 
-        final State state = new State(self, world, game, move);
+        final GameState gameState = history.getGameState();
 
         // Если осталось мало жизненной энергии, отступаем к предыдущей ключевой точке на линии.
-        if (state.isLowHP) {
+        if (gameState.isLowHP) {
             moving.goTo(globalMoving.getPreviousWaypoint());
-        } else if (state.hasEnemy) {
+        } else if (gameState.hasNearEnemy) {
             final LivingUnit nearestTarget = enemyAnalysis.getNearestEnemy();
             final Attack attack = new Attack(self, game);
             attack.getMove(move, nearestTarget);
@@ -61,6 +63,12 @@ public final class MyStrategy implements Strategy {
     private void initializeStrategy() {
         random = random == null ?
                 new Random(game.getRandomSeed()) : random;
+        history = history == null ?
+                new History() : history;
+
+        final StateAnalyzer stateAnalyzer = new StateAnalyzer(self, world, game, move);
+        final StateShot stateShot = stateAnalyzer.getStateShot();
+        history.add(stateShot);
 
         globalMoving = new GlobalMoving(self, game);
         moving = new Moving(self, move, game);

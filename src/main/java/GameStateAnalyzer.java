@@ -1,38 +1,47 @@
 import model.*;
 
-public class State {
-    public boolean isLowHP;
-    public boolean hasEnemy;
-    public boolean canAttack;
-
+public class GameStateAnalyzer {
     private Wizard self;
     private World world;
     private Game game;
     private Move move;
 
-    public State(Wizard self, World world, Game game, Move move) {
+    public GameStateAnalyzer(Wizard self, World world, Game game, Move move) {
         this.self = self;
         this.world = world;
         this.game = game;
         this.move = move;
-
-        checkState();
     }
 
-    private void checkState() {
+    public GameState getGameState() {
+        final GameState gameState = new GameState();
+        initHP(gameState);
+        initEnemy(gameState);
+        initFriend(gameState);
+
+        return gameState;
+    }
+
+    private void initHP(GameState gameState) {
         // Если осталось мало жизненной энергии
         if (self.getLife() < self.getMaxLife() * Const.LOW_HP_FACTOR) {
-            isLowHP = true;
+            gameState.isLowHP = true;
         }
+    }
 
+    private void initEnemy(GameState gameState) {
         final EnemyAnalysis enemyAnalysis = new EnemyAnalysis(self, world);
         final LivingUnit nearestEnemy = enemyAnalysis.getNearestEnemy();
         if (nearestEnemy != null) {
-            hasEnemy = true;
+            gameState.hasNearEnemy = true;
             final Attack attack = new Attack(self, game);
             if (attack.canAttack(nearestEnemy)) {
-                canAttack = true;
+                gameState.canAttack = true;
             }
         }
+    }
+
+    private void initFriend(GameState gameState) {
+
     }
 }
