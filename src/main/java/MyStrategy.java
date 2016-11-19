@@ -13,6 +13,7 @@ public final class MyStrategy implements Strategy {
     private Random random;
     private GlobalMoving globalMoving;
     private Moving moving;
+    private EnemyAnalysis enemyAnalysis;
 
     /**
      * Основной метод стратегии, осуществляющий управление волшебником.
@@ -34,7 +35,7 @@ public final class MyStrategy implements Strategy {
             return;
         }
 
-        LivingUnit nearestTarget = getNearestTarget();
+        LivingUnit nearestTarget = enemyAnalysis.getNearestTarget();
 
         // Если видим противника ...
         if (nearestTarget != null) {
@@ -85,33 +86,6 @@ public final class MyStrategy implements Strategy {
 
         globalMoving = new GlobalMoving(self, game);
         moving = new Moving(self, move, game);
-    }
-
-    /**
-     * Находим ближайшую цель для атаки, независимо от её типа и других характеристик.
-     */
-    private LivingUnit getNearestTarget() {
-        List<LivingUnit> targets = new ArrayList<>();
-        targets.addAll(Arrays.asList(world.getBuildings()));
-        targets.addAll(Arrays.asList(world.getWizards()));
-        targets.addAll(Arrays.asList(world.getMinions()));
-
-        LivingUnit nearestTarget = null;
-        double nearestTargetDistance = Double.MAX_VALUE;
-
-        for (LivingUnit target : targets) {
-            if (target.getFaction() == Faction.NEUTRAL || target.getFaction() == self.getFaction()) {
-                continue;
-            }
-
-            double distance = self.getDistanceTo(target);
-
-            if (distance < nearestTargetDistance) {
-                nearestTarget = target;
-                nearestTargetDistance = distance;
-            }
-        }
-
-        return nearestTarget;
+        enemyAnalysis = new EnemyAnalysis(self, world);
     }
 }
