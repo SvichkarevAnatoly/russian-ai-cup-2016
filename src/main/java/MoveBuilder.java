@@ -19,10 +19,10 @@ public class MoveBuilder {
 
     public void build() {
         final GameState gameState = history.getGameState();
+        final Params params = new Params(self);
 
         final GlobalMoving globalMoving = new GlobalMoving(self, game);
         final Moving moving = new Moving(self, move, game, gameState);
-        final EnemyAnalysis enemyAnalysis = new EnemyAnalysis(self, world);
 
         if (gameState.isNotAlive){
             return;
@@ -33,7 +33,8 @@ public class MoveBuilder {
         } else if (gameState.isLowHP) {
             moving.goTo(globalMoving.getPreviousWaypoint());
         } else if (gameState.canAttack) {
-            final LivingUnit nearestTarget = enemyAnalysis.getNearestEnemy();
+            final Enemies enemies = new Enemies(world, params.enemy);
+            final LivingUnit nearestTarget = enemies.getNearest(self);
             final Attack attack = new Attack(self, game);
             attack.getMove(move, nearestTarget);
         } else {

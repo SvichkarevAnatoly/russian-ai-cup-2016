@@ -46,8 +46,9 @@ public class GameStateAnalyzer {
     }
 
     private void initEnemy() {
-        final EnemyAnalysis enemyAnalysis = new EnemyAnalysis(self, world);
-        final LivingUnit nearestEnemy = enemyAnalysis.getNearestEnemy();
+        final Params params = new Params(self);
+        final Enemies enemies = new Enemies(world, params.enemy);
+        final LivingUnit nearestEnemy = enemies.getNearest(self);
         if (nearestEnemy != null) {
             gameState.hasEnemy = true;
             final Attack attack = new Attack(self, game);
