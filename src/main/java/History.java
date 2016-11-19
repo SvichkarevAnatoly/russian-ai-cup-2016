@@ -16,4 +16,12 @@ public class History {
     public WizardParams getWizardParams() {
         return states.getLast().wizardParams;
     }
+
+    public boolean isEmpty() {
+        return states.isEmpty();
+    }
+
+    public int size() {
+        return states.size();
+    }
 }

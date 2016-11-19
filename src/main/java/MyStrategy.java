@@ -67,7 +67,7 @@ public final class MyStrategy implements Strategy {
                 new History() : history;
 
         final StateAnalyzer stateAnalyzer = new StateAnalyzer(self, world, game, move);
-        final StateShot stateShot = stateAnalyzer.getStateShot();
+        final StateShot stateShot = stateAnalyzer.getStateShot(history);
         history.add(stateShot);
 
         globalMoving = new GlobalMoving(self, game);

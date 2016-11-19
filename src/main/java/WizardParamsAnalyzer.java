@@ -22,8 +22,7 @@ public class WizardParamsAnalyzer {
         wizardParams.hp = self.getLife();
         wizardParams.mana = self.getMana();
 
-        wizardParams.x = self.getX();
-        wizardParams.y = self.getY();
+        wizardParams.point = new Point(self.getX(), self.getY());
 
         return wizardParams;
     }
