@@ -3,8 +3,6 @@ import model.*;
 import java.util.*;
 
 public final class MyStrategy implements Strategy {
-    private static final double LOW_HP_FACTOR = 0.25D;
-
     private Wizard self;
     private World world;
     private Game game;
@@ -29,15 +27,14 @@ public final class MyStrategy implements Strategy {
         initializeTick(self, world, game, move);
         initializeStrategy();
 
-        // Если осталось мало жизненной энергии, отступаем к предыдущей ключевой точке на линии.
-        if (self.getLife() < self.getMaxLife() * LOW_HP_FACTOR) {
-            moving.goTo(globalMoving.getPreviousWaypoint());
-            return;
-        }
+        final State state = new State(self, world, game, move);
 
-        final LivingUnit nearestTarget = enemyAnalysis.getNearestTarget();
-        final Attack attack = new Attack(self, game);
-        if (attack.canAttack(nearestTarget)) {
+        // Если осталось мало жизненной энергии, отступаем к предыдущей ключевой точке на линии.
+        if (state.isLowHP) {
+            moving.goTo(globalMoving.getPreviousWaypoint());
+        } else if (state.hasEnemy) {
+            final LivingUnit nearestTarget = enemyAnalysis.getNearestEnemy();
+            final Attack attack = new Attack(self, game);
             attack.getMove(move, nearestTarget);
         } else {
             // Если нет других действий, просто продвигаемся вперёд.

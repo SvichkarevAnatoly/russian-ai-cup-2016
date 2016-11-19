@@ -19,7 +19,7 @@ public class EnemyAnalysis {
     /**
      * Находим ближайшую цель для атаки, независимо от её типа и других характеристик.
      */
-    public LivingUnit getNearestTarget() {
+    public LivingUnit getNearestEnemy() {
         List<LivingUnit> targets = new ArrayList<>();
         targets.addAll(Arrays.asList(world.getBuildings()));
         targets.addAll(Arrays.asList(world.getWizards()));
