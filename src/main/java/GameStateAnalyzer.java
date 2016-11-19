@@ -37,8 +37,8 @@ public class GameStateAnalyzer {
 
         final GameState preGameState = history.getPreviousGameState();
         if (preGameState.isMoving && !preGameState.isOnlyTurning) {
-            final WizardParams wizardParams = history.getWizardParams();
-            final Point point = wizardParams.point;
+            final WizardParams preWizardParams = history.getPreviousWizardParams();
+            final Point point = preWizardParams.point;
             if (point.getDistanceTo(self) < Const.DIST_EPS) {
                 gameState.canNotMove = true;
             }

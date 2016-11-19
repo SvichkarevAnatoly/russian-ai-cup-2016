@@ -19,6 +19,10 @@ public class History {
         return states.get(states.size() - 2).gameState;
     }
 
+    public WizardParams getPreviousWizardParams() {
+        return states.get(states.size() - 2).wizardParams;
+    }
+
     public boolean isEmpty() {
         return states.isEmpty();
     }
