@@ -24,6 +24,7 @@ public class GameState {
     public boolean canBeUnderTowerAttack;
     public boolean canBeUnderWizardAttack;
 
+    public boolean isFriendMinionsAhead;
     public boolean hasNearFriendWizard;
     public boolean hasNearMoreThan2FriendWizard;
     public boolean hasNearFriendMinions;

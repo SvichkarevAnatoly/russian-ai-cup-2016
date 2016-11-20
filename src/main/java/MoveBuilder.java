@@ -30,16 +30,12 @@ public class MoveBuilder {
 
         final Attack attack = new Attack(self, game);
         final Enemies enemies = new Enemies(world, params.enemy);
+        final NearMinionFriends nearMinionFriends = new NearMinionFriends(world, params.self, self);
 
         if(gs.canNotMove) {
             moving.goSomewhere();
         } else if (gs.isLowHP) {
             moving.goTo(globalMoving.getPreviousWaypoint());
-        } else if (gs.canBeUnderTowerAttack) {
-            if (gs.canAttack) {
-                final LivingUnit nearest = enemies.getNearest(self);
-                attack.attack(move, nearest);
-            }
         } else if (gs.wasUnderAttack) {
             final LivingUnit lastEnemy = history.getLastEnemy();
             moving.goOpposite(new Point(lastEnemy));
@@ -56,6 +52,14 @@ public class MoveBuilder {
                 selectedEnemy = enemies.getNearest(self);
             }
             attack.attack(move, selectedEnemy);
+        } else if (gs.isFriendMinionsAhead) {
+            final Point center = nearMinionFriends.getCenter();
+            moving.goTo(center);
+        } else if (gs.canBeUnderTowerAttack) {
+            if (gs.canAttack) {
+                final LivingUnit nearest = enemies.getNearest(self);
+                attack.attack(move, nearest);
+            }
         } else {
             // Если нет других действий, просто продвигаемся вперёд.
             moving.goToNextWaypoint(globalMoving.getNextWaypoint());

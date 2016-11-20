@@ -103,7 +103,11 @@ public class GameStateAnalyzer {
     }
 
     private void initFriend() {
-
+        final Params params = new Params(self);
+        final NearMinionFriends nearMinionFriends = new NearMinionFriends(world, params.self, self);
+        if (nearMinionFriends.isFriendsAhead(self)) {
+            gameState.isFriendMinionsAhead = true;
+        }
     }
 
     private boolean initIsNotAlive() {

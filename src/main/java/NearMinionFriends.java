@@ -15,6 +15,16 @@ public class NearMinionFriends extends MinionFriends {
         }
     }
 
+    public boolean isFriendsAhead(Wizard self) {
+        for (LivingUnit minion : nearMinionFriends) {
+            if (M.y(minion.getY()) > (M.y(self.getY()) - (minion.getX() - self.getX()))) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public boolean isEmpty() {
         return nearMinionFriends.isEmpty();
     }
