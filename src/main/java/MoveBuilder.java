@@ -18,33 +18,38 @@ public class MoveBuilder {
     }
 
     public void build() {
-        final GameState gameState = history.getGameState();
+        final GameState gs = history.getGameState();
         final Params params = new Params(self);
 
         final GlobalMoving globalMoving = new GlobalMoving(self, game);
-        final Moving moving = new Moving(self, move, game, gameState);
+        final Moving moving = new Moving(self, move, game, gs);
 
-        if (gameState.isNotAlive){
+        if (gs.isNotAlive){
             return;
         }
 
         final Attack attack = new Attack(self, game);
         final Enemies enemies = new Enemies(world, params.enemy);
 
-        if(gameState.canNotMove) {
+        if(gs.canNotMove) {
             moving.goSomewhere();
-        } else if (gameState.isLowHP) {
+        } else if (gs.isLowHP) {
             moving.goTo(globalMoving.getPreviousWaypoint());
-        } else if (gameState.wasUnderAttack) {
-            final LivingUnit lastEnemy = history.getLastEnemy();
-            moving.goOpposite(new Point(lastEnemy));
-            if (gameState.canAttack) {
+        } else if (gs.canBeUnderTowerAttack) {
+            if (gs.canAttack) {
                 final LivingUnit nearest = enemies.getNearest(self);
                 attack.attack(move, nearest);
             }
-        } else if (gameState.hasEnemy && gameState.canAttack) {
+        } else if (gs.wasUnderAttack) {
+            final LivingUnit lastEnemy = history.getLastEnemy();
+            moving.goOpposite(new Point(lastEnemy));
+            if (gs.canAttack) {
+                final LivingUnit nearest = enemies.getNearest(self);
+                attack.attack(move, nearest);
+            }
+        } else if (gs.hasEnemy && gs.canAttack) {
             final LivingUnit selectedEnemy;
-            if (gameState.hasMoreThanOneEnemy) {
+            if (gs.hasMoreThanOneEnemy) {
                 enemies.sortMostInjured();
                 selectedEnemy = enemies.getFirstInRange(self);
             } else {

@@ -81,7 +81,7 @@ public class GameStateAnalyzer {
     private void initEnemy() {
         final Params params = new Params(self);
 
-        initCanBeUnderAttack(params);
+        initCanBeUnderAttack();
 
         final Enemies enemies = new Enemies(world, params.enemy);
         if (enemies.enemies.size() > 1) {
@@ -98,9 +98,8 @@ public class GameStateAnalyzer {
         }
     }
 
-    private void initCanBeUnderAttack(Params params) {
-        final EnemyTowers enemyTowers = new EnemyTowers(world, params.enemy);
-        gameState.canBeUnderTowerAttack = enemyTowers.isInRange(self);
+    private void initCanBeUnderAttack() {
+        gameState.canBeUnderTowerAttack = EnemyMiddleTower.isInRange(self);
     }
 
     private void initFriend() {
