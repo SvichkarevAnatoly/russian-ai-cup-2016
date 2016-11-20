@@ -5,9 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class History {
-    private static final int CAPACITY = 100;
-
-    private FixedSizeLinkedList<StateShot> states = new FixedSizeLinkedList<>(CAPACITY);
+    private FixedSizeLinkedList<StateShot> states = new FixedSizeLinkedList<>(Const.HISTORY_CAPACITY);
 
     public void add(StateShot stateShot) {
         states.add(stateShot);
