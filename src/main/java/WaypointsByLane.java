@@ -20,6 +20,8 @@ public class WaypointsByLane {
                 new Point(990, M.y(1200.0D)),
                 new Point(4.45 * 400.0D, M.y(3.95 * 400.0D)),
                 new Point(4.6 * 400.0D, M.y(4.25 * 400.0D)),
+                new Point(5 * 400.0D, M.y(5 * 400.0D)),
+                new Point(6 * 400.0D, M.y(6 * 400.0D)),
                 new Point(9.5 * 400.0D, M.y(9.5 * 400.0D)),
         });
 
