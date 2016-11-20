@@ -28,6 +28,9 @@ public class MoveBuilder {
             return;
         }
 
+        final Attack attack = new Attack(self, game);
+        final Enemies enemies = new Enemies(world, params.enemy);
+
         if(gameState.canNotMove) {
             moving.goSomewhere();
         } else if (gameState.isLowHP) {
@@ -35,11 +38,11 @@ public class MoveBuilder {
         } else if (gameState.wasUnderAttack) {
             final LivingUnit lastEnemy = history.getLastEnemy();
             moving.goOpposite(new Point(lastEnemy));
-        } else if (gameState.canBeUnderTowerAttack) {
-            final LivingUnit nearestTower = new EnemyTowers(world, params.enemy).getNearest(self);
-            moving.goOpposite(new Point(nearestTower));
+            if (gameState.canAttack) {
+                final LivingUnit nearest = enemies.getNearest(self);
+                attack.attack(move, nearest);
+            }
         } else if (gameState.hasEnemy && gameState.canAttack) {
-            final Enemies enemies = new Enemies(world, params.enemy);
             final LivingUnit selectedEnemy;
             if (gameState.hasMoreThanOneEnemy) {
                 enemies.sortMostInjured();
@@ -47,8 +50,7 @@ public class MoveBuilder {
             } else {
                 selectedEnemy = enemies.getNearest(self);
             }
-            final Attack attack = new Attack(self, game);
-            attack.getMove(move, selectedEnemy);
+            attack.attack(move, selectedEnemy);
         } else {
             // Если нет других действий, просто продвигаемся вперёд.
             moving.goToNextWaypoint(globalMoving.getNextWaypoint());

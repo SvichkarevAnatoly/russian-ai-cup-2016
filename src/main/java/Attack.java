@@ -22,7 +22,7 @@ public class Attack {
         return false;
     }
 
-    public Move getMove(Move move, LivingUnit unit) {
+    public void attack(Move move, LivingUnit unit) {
         double distance = self.getDistanceTo(unit);
         double angle = self.getAngleTo(unit);
 
@@ -36,7 +36,5 @@ public class Attack {
             move.setCastAngle(angle);
             move.setMinCastDistance(distance - unit.getRadius() + game.getMagicMissileRadius());
         }
-
-        return move;
     }
 }
