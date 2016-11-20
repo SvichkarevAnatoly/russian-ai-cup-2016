@@ -16,10 +16,11 @@ public class WaypointsByLane {
         waypointsByLane = new EnumMap<>(LaneType.class);
 
         waypointsByLane.put(LaneType.MIDDLE, new Point[]{
-                new Point(100.0D, mapSize - 100.0D),
-                new Point(200.0D, mapSize - 600.0D),
-                new Point(800.0D, mapSize - 800.0D),
-                new Point(mapSize - 600.0D, 600.0D)
+                new Point(200, M.y(600)),
+                new Point(990, M.y(1200.0D)),
+                new Point(4.45 * 400.0D, M.y(3.95 * 400.0D)),
+                new Point(4.6 * 400.0D, M.y(4.25 * 400.0D)),
+                new Point(9.5 * 400.0D, M.y(9.5 * 400.0D)),
         });
 
         waypointsByLane.put(LaneType.TOP, new Point[]{
