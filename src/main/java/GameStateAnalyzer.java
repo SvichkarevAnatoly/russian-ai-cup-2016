@@ -96,6 +96,7 @@ public class GameStateAnalyzer {
         final LivingUnit nearestEnemy = enemies.getNearest(self);
         if (nearestEnemy != null) {
             gameState.hasEnemy = true;
+            gameState.isOrkAtWarningDistance = enemies.isOrkAtWarningDistance(self);
             final Attack attack = new Attack(self, game);
             if (attack.canAttack(nearestEnemy)) {
                 gameState.canAttack = true;

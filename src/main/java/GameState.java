@@ -39,4 +39,5 @@ public class GameState {
     public boolean isRescueing;
 
     public boolean isNearEnemyBase;
+    public boolean isOrkAtWarningDistance;
 }

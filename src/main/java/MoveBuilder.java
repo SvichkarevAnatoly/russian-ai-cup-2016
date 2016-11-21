@@ -49,6 +49,9 @@ public class MoveBuilder {
             } else { // don't know how to react for friend fire
                 moving.goToNextWaypoint(nextWaypoint);
             }
+        } else if (gs.isOrkAtWarningDistance) {
+            moving.goBackward(previousWaypoint);
+            attackIfCanWithoutTurnNearest(attack, enemies);
         } else if (gs.hasEnemy && gs.canAttack) {
             final LivingUnit selectedEnemy;
             if (gs.hasMoreThanOneEnemy) {

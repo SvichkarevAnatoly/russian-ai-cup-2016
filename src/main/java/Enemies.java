@@ -33,6 +33,17 @@ public class Enemies extends LivingUnits {
         return nearest;
     }
 
+    public boolean isOrkAtWarningDistance(Wizard self) {
+        final LivingUnit nearest = getNearest(self);
+        if (nearest != null) {
+            double distance = self.getDistanceTo(nearest);
+            if (distance <= Const.DIST_ORC_CAN_ATTACK + Const.WARNING_DIST_TO_ORC) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void sortMostInjured() {
         Collections.sort(enemies, new Comparator<LivingUnit>() {
             @Override
