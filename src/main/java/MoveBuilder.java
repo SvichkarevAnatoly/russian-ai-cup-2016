@@ -60,7 +60,7 @@ public class MoveBuilder {
             }
             attack.attack(move, selectedEnemy);
         } else if (gs.isFriendMinionsAhead) {
-            if (! gs.isNearEnemyBase) {
+            if (!gs.isNearEnemyBase || (nearMinionFriends.size() > 8)) {
                 final Point center = nearMinionFriends.getCenter();
                 moving.goTo(center);
             }

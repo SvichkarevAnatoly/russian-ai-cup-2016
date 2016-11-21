@@ -45,4 +45,8 @@ public class NearMinionFriends extends MinionFriends {
 
         return new Point(centerX, centerY);
     }
+
+    public int size() {
+        return nearMinionFriends.size();
+    }
 }
