@@ -3,11 +3,11 @@ import model.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EnemyTowers extends Enemies {
+public class EnemyTowersInRange extends EnemiesInRange {
     protected List<Building> towers = new ArrayList<>();
 
-    public EnemyTowers(World world, Faction enemyFaction) {
-        super(world, enemyFaction);
+    public EnemyTowersInRange(World world, Faction enemyFaction, Wizard self) {
+        super(world, enemyFaction, self);
         for (LivingUnit enemy : enemies) {
             if (enemy instanceof Building) {
                 towers.add((Building) enemy);
@@ -29,5 +29,9 @@ public class EnemyTowers extends Enemies {
             }
         }
         return nearest;
+    }
+
+    public boolean isEmpty() {
+        return towers.isEmpty();
     }
 }

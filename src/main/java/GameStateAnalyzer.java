@@ -88,7 +88,7 @@ public class GameStateAnalyzer {
 
         initCanBeUnderAttack();
 
-        final Enemies enemies = new Enemies(world, params.enemy);
+        final Enemies enemies = new EnemiesInRange(world, params.enemy, self);
         if (enemies.enemies.size() > 1) {
             gameState.hasMoreThanOneEnemy = true;
         }

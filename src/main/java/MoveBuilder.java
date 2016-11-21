@@ -29,7 +29,12 @@ public class MoveBuilder {
         }
 
         final Attack attack = new Attack(self, game);
-        final Enemies enemies = new Enemies(world, params.enemy);
+
+        final Enemies enemies = new EnemiesInRange(world, params.enemy, self);
+        final EnemyMinionsInRange enemyMinions = new EnemyMinionsInRange(world, params.enemy, self);
+        final EnemyWizardsInRange enemyWizards = new EnemyWizardsInRange(world, params.enemy, self);
+        final EnemyTowersInRange enemyTowers = new EnemyTowersInRange(world, params.enemy, self);
+
         final NearMinionFriends nearMinionFriends = new NearMinionFriends(world, params.self, self);
 
         final Point previousWaypoint = globalMoving.getPreviousWaypoint();
@@ -55,8 +60,15 @@ public class MoveBuilder {
         } else if (gs.hasEnemy && gs.canAttack) {
             final LivingUnit selectedEnemy;
             if (gs.hasMoreThanOneEnemy) {
-                enemies.sortMostInjured();
-                selectedEnemy = enemies.getFirstInRange(self);
+                if (!enemyTowers.isEmpty() && attack.canAttack(enemyTowers.getNearest(self))) {
+                    selectedEnemy = enemyTowers.getNearest(self);
+                } else if (!enemyWizards.isEmpty() && attack.canAttack(enemyWizards.getNearest(self))) {
+                    enemyWizards.sortMostInjured();
+                    selectedEnemy = enemyWizards.getFirstInRange(self);
+                } else {
+                    enemyMinions.sortMostInjured();
+                    selectedEnemy = enemyMinions.getFirstInRange(self);
+                }
             } else {
                 selectedEnemy = enemies.getNearest(self);
             }

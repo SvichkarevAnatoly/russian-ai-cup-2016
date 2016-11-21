@@ -33,7 +33,7 @@ public class Enemies extends LivingUnits {
         return nearest;
     }
 
-    public boolean isOrkAtWarningDistance(Wizard self) {
+    public boolean isOrkAtWarningDistance(Wizard self) { // TODO: не только орк подходит
         final LivingUnit nearest = getNearest(self);
         if (nearest != null) {
             double distance = self.getDistanceTo(nearest);
