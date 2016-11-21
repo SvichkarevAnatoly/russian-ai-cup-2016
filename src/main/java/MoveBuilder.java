@@ -38,10 +38,15 @@ public class MoveBuilder {
             moving.goTo(globalMoving.getPreviousWaypoint());
         } else if (gs.wasUnderAttack) {
             final LivingUnit lastEnemy = history.getLastEnemy();
-            moving.goOpposite(new Point(lastEnemy));
-            if (gs.canAttack) {
-                final LivingUnit nearest = enemies.getNearest(self);
-                attack.attack(move, nearest);
+            if (lastEnemy != null) { // not enemy unit fire
+                moving.goOpposite(new Point(lastEnemy));
+                if (gs.canAttack) {
+                    final LivingUnit nearest = enemies.getNearest(self);
+                    attack.attack(move, nearest);
+                }
+            } else { // TODO: don't know how to react for friend fire
+                final Point nextWaypoint = globalMoving.getNextWaypoint();
+                moving.goToNextWaypoint(nextWaypoint);
             }
         } else if (gs.hasEnemy && gs.canAttack) {
             final LivingUnit selectedEnemy;
@@ -62,7 +67,8 @@ public class MoveBuilder {
             }
         } else {
             // Если нет других действий, просто продвигаемся вперёд.
-            moving.goToNextWaypoint(globalMoving.getNextWaypoint());
+            final Point nextWaypoint = globalMoving.getNextWaypoint();
+            moving.goToNextWaypoint(nextWaypoint);
         }
     }
 }

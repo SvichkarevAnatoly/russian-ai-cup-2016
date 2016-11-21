@@ -4,7 +4,10 @@ import model.Wizard;
 import model.World;
 
 public final class MyStrategy implements Strategy {
-    private History history;
+    // DEBUG
+    private static int iter = 0;
+
+    private History history = new History();
 
     /**
      * Основной метод стратегии, осуществляющий управление волшебником.
@@ -17,6 +20,7 @@ public final class MyStrategy implements Strategy {
      */
     @Override
     public void move(Wizard self, World world, Game game, Move move) {
+        System.out.println(iter++);
         initializeStrategy(self, world, game, move);
 
         final MoveBuilder moveBuilder = new MoveBuilder(history, self, world, game, move);
@@ -30,9 +34,6 @@ public final class MyStrategy implements Strategy {
      * случайных чисел значением, полученным от симулятора игры.
      */
     private void initializeStrategy(Wizard self, World world, Game game, Move move) {
-        history = history == null ?
-                new History() : history;
-
         final StateAnalyzer stateAnalyzer = new StateAnalyzer(self, world, game, move);
         final StateShot stateShot = stateAnalyzer.getStateShot(history);
         history.add(stateShot);
