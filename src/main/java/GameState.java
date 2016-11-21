@@ -37,4 +37,6 @@ public class GameState {
     public boolean isMoving;
     public boolean isOnlyTurning;
     public boolean isRescueing;
+
+    public boolean isNearEnemyBase;
 }

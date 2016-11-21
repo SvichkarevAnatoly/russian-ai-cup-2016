@@ -19,6 +19,7 @@ public class GameStateAnalyzer {
 
     public GameState getGameState(History history) {
         initSelf(history);
+        initPosition();
         initEnemy();
         initFriend();
 
@@ -76,6 +77,10 @@ public class GameStateAnalyzer {
                 gameState.canNotMove = true;
             }
         }
+    }
+
+    private void initPosition() {
+        gameState.isNearEnemyBase = EnemyMiddleTower.isInRangeBase(self);
     }
 
     private void initEnemy() {

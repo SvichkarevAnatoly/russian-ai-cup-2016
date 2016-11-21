@@ -8,6 +8,7 @@ public class EnemyMiddleTower {
     public static final boolean[] isAlive = new boolean[]{true, true, true};
     public static final double[] towerAttackRange = new double[]{600.0D, 600.0D, 800.0D};
 
+    // TODO: нужно как-то отмечать уничтоженные башни
     public static boolean isInRange(Wizard self) {
         for (int i = 0; i < towers.length; i++) {
             final Point tower = towers[i];
@@ -18,5 +19,9 @@ public class EnemyMiddleTower {
             }
         }
         return false;
+    }
+
+    public static boolean isInRangeBase(Wizard self) {
+        return towers[2].getDistanceTo(self) <= Const.WARNING_DIST_TO_ENEMY_BASE;
     }
 }
