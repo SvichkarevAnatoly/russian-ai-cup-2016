@@ -32,20 +32,22 @@ public class MoveBuilder {
         final Enemies enemies = new Enemies(world, params.enemy);
         final NearMinionFriends nearMinionFriends = new NearMinionFriends(world, params.self, self);
 
+        final Point previousWaypoint = globalMoving.getPreviousWaypoint();
+        final Point nextWaypoint = globalMoving.getNextWaypoint();
+
         if(gs.canNotMove) {
             moving.goSomewhere();
         } else if (gs.isLowHP) {
-            moving.goTo(globalMoving.getPreviousWaypoint());
+            moving.goTo(previousWaypoint);
         } else if (gs.wasUnderAttack) {
             final LivingUnit lastEnemy = history.getLastEnemy();
             if (lastEnemy != null) { // not enemy unit fire
-                moving.goOpposite(new Point(lastEnemy));
+                moving.goBackward(previousWaypoint);
                 if (gs.canAttack) {
                     final LivingUnit nearest = enemies.getNearest(self);
-                    attack.attack(move, nearest);
+                    attack.attackWithoutTurn(move, nearest);
                 }
-            } else { // TODO: don't know how to react for friend fire
-                final Point nextWaypoint = globalMoving.getNextWaypoint();
+            } else { // don't know how to react for friend fire
                 moving.goToNextWaypoint(nextWaypoint);
             }
         } else if (gs.hasEnemy && gs.canAttack) {
@@ -69,7 +71,6 @@ public class MoveBuilder {
             }
         } else {
             // Если нет других действий, просто продвигаемся вперёд.
-            final Point nextWaypoint = globalMoving.getNextWaypoint();
             moving.goToNextWaypoint(nextWaypoint);
         }
     }

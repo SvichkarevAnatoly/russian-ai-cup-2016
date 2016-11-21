@@ -33,8 +33,14 @@ public class Moving {
         }
     }
 
-    public void goOpposite(Point point) {
-        double angle = self.getAngleTo(point.getX(), point.getY());
+    public void goBackward(Point point) {
+        final double sx = self.getX();
+        final double sy = self.getY();
+        final double px = point.getX();
+        final double py = point.getY();
+        final Point angleAim = new Point(sx + (sx - px), sy + (sy - py));
+
+        double angle = self.getAngleTo(angleAim.getX(), angleAim.getY());
 
         move.setTurn(angle);
         move.setSpeed(-game.getWizardBackwardSpeed());

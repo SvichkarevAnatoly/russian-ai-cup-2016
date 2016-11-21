@@ -37,4 +37,16 @@ public class Attack {
             move.setMinCastDistance(distance - unit.getRadius() + game.getMagicMissileRadius());
         }
     }
+
+    public void attackWithoutTurn(Move move, LivingUnit unit) {
+        double distance = self.getDistanceTo(unit);
+        double angle = self.getAngleTo(unit);
+
+        if (StrictMath.abs(angle) < game.getStaffSector() / 2.0D) {
+            // ... то атакуем.
+            move.setAction(ActionType.MAGIC_MISSILE);
+            move.setCastAngle(angle);
+            move.setMinCastDistance(distance - unit.getRadius() + game.getMagicMissileRadius());
+        }
+    }
 }
