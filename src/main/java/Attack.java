@@ -38,7 +38,7 @@ public class Attack {
         }
     }
 
-    public void attackWithoutTurn(Move move, LivingUnit unit) {
+    public void attackIfCanWithoutTurn(Move move, LivingUnit unit) {
         double distance = self.getDistanceTo(unit);
         double angle = self.getAngleTo(unit);
 

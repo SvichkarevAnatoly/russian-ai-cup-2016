@@ -11,6 +11,10 @@ public class Moving {
 
     private final GameState gameState;
 
+    private static final Random random = new Random();
+    private static int callTimes = 0;
+    private static boolean isLeft;
+
     public Moving(Wizard self, Move move, Game game, GameState gameState) {
         this.self = self;
         this.move = move;
@@ -28,6 +32,7 @@ public class Moving {
 
         if (StrictMath.abs(angle) < game.getStaffSector() / 4.0D) {
             move.setSpeed(game.getWizardForwardSpeed());
+            gameState.isMoving = true;
         } else {
             gameState.isOnlyTurning = true;
         }
@@ -44,11 +49,10 @@ public class Moving {
 
         move.setTurn(angle);
         move.setSpeed(-game.getWizardBackwardSpeed());
+        gameState.isMoving = true;
     }
 
     public void goSomewhere() {
-        final Random random = new Random();
-
         if (random.nextBoolean()) {
             move.setStrafeSpeed(game.getWizardStrafeSpeed());
         } else {
@@ -59,6 +63,22 @@ public class Moving {
             move.setSpeed(game.getWizardForwardSpeed());
         } else {
             move.setSpeed(-game.getWizardBackwardSpeed());
+        }
+    }
+
+    public void goStrafe() {
+        // чтобы двойной сдвиг был
+        if (callTimes < 2) {
+            callTimes++;
+        } else {
+            isLeft = random.nextBoolean();
+            callTimes = 0;
+        }
+
+        if (isLeft) {
+            move.setStrafeSpeed(game.getWizardStrafeSpeed());
+        } else {
+            move.setStrafeSpeed(-game.getWizardStrafeSpeed());
         }
     }
 
