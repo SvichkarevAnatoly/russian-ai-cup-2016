@@ -1,17 +1,18 @@
 import model.LaneType;
 import model.Wizard;
 
+// Singleton
 public class GlobalMoving {
-    private static final double WAYPOINT_RADIUS = 100.0D;
+    private static GlobalMoving instance = new GlobalMoving();
 
-    private Wizard self;
+    public static GlobalMoving getInstance() {
+        return instance;
+    }
 
     private WaypointsByLane waypointsByLane;
     private LaneType lane;
 
-    public GlobalMoving(Wizard self) {
-        this.self = self;
-
+    private GlobalMoving() {
         this.lane = LaneType.MIDDLE;
         waypointsByLane = new WaypointsByLane();
     }
@@ -24,7 +25,7 @@ public class GlobalMoving {
      * Дополнительно проверяем, не находится ли волшебник достаточно близко к какой-либо из ключевых точек. Если это
      * так, то мы сразу возвращаем следующую ключевую точку.
      */
-    public Point getNextWaypoint() {
+    public Point getNextWaypoint(Wizard self) {
         final Point[] waypoints = waypointsByLane.get(lane);
         int lastWaypointIndex = waypoints.length - 1;
         Point lastWaypoint = waypoints[lastWaypointIndex];
@@ -32,7 +33,7 @@ public class GlobalMoving {
         for (int waypointIndex = 0; waypointIndex < lastWaypointIndex; ++waypointIndex) {
             Point waypoint = waypoints[waypointIndex];
 
-            if (waypoint.getDistanceTo(self) <= WAYPOINT_RADIUS) {
+            if (waypoint.getDistanceTo(self) <= Const.WAYPOINT_RADIUS) {
                 return waypoints[waypointIndex + 1];
             }
 
@@ -48,14 +49,14 @@ public class GlobalMoving {
      * Действие данного метода абсолютно идентично действию метода {@code getNextWaypoint}, если перевернуть массив
      * {@code waypoints}.
      */
-    public Point getPreviousWaypoint() {
+    public Point getPreviousWaypoint(Wizard self) {
         final Point[] waypoints = waypointsByLane.get(lane);
         Point firstWaypoint = waypoints[0];
 
         for (int waypointIndex = waypoints.length - 1; waypointIndex > 0; --waypointIndex) {
             Point waypoint = waypoints[waypointIndex];
 
-            if (waypoint.getDistanceTo(self) <= WAYPOINT_RADIUS) {
+            if (waypoint.getDistanceTo(self) <= Const.WAYPOINT_RADIUS) {
                 return waypoints[waypointIndex - 1];
             }
 

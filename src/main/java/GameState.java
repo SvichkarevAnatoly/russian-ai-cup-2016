@@ -23,4 +23,6 @@ public class GameState {
 
     public boolean isNearEnemyBase;
     public boolean isOrkAtWarningDistance;
+
+    public boolean isNeedChangeLane;
 }

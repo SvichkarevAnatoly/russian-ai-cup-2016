@@ -12,7 +12,7 @@ public class StateAnalyzer {
     }
 
     public StateShot getStateShot() {
-        final GameStateAnalyzer gsa = new GameStateAnalyzer(self, world, move);
+        final GameStateAnalyzer gsa = new GameStateAnalyzer(self, world);
         final GameState gameState = gsa.getGameState();
 
         final WizardParamsAnalyzer wpa = new WizardParamsAnalyzer(self);

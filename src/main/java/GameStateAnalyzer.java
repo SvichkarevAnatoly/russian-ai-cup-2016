@@ -5,14 +5,12 @@ import java.util.List;
 public class GameStateAnalyzer {
     private Wizard self;
     private World world;
-    private Move move;
 
     private GameState gameState = new GameState();
 
-    public GameStateAnalyzer(Wizard self, World world, Move move) {
+    public GameStateAnalyzer(Wizard self, World world) {
         this.self = self;
         this.world = world;
-        this.move = move;
     }
 
     public GameState getGameState() {
@@ -80,6 +78,7 @@ public class GameStateAnalyzer {
 
     private void initPosition() {
         gameState.isNearEnemyBase = EnemyMiddleTower.isInRangeBase(self);
+//        gameState.isNeedChangeLane =
     }
 
     private void initEnemy() {

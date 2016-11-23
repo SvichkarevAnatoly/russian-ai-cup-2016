@@ -14,23 +14,24 @@ public class MoveBuilder {
     public void build() {
         final History history = History.getInstance();
         final GameState gs = history.getGameState();
+        final WizardParams wp = history.getWizardParams();
+
         final Params params = new Params(self);
 
-        final GlobalMoving globalMoving = new GlobalMoving(self);
+        final GlobalMoving globalMoving = GlobalMoving.getInstance();
         final Moving moving = new Moving(self, move, gs);
-
-        if (gs.isNotAlive){
-            return;
-        }
 
         final Attack attack = new Attack(self);
 
         final Enemies enemies = new EnemiesInRange(world, params.enemy, self);
-
         final NearMinionFriends nearMinionFriends = new NearMinionFriends(world, params.self, self);
 
-        final Point previousWaypoint = globalMoving.getPreviousWaypoint();
-        final Point nextWaypoint = globalMoving.getNextWaypoint();
+        final Point previousWaypoint = globalMoving.getPreviousWaypoint(self);
+        final Point nextWaypoint = globalMoving.getNextWaypoint(self);
+
+        if (gs.isNotAlive){
+            return;
+        }
 
         if(gs.canNotMove) {
             moving.goStrafe();
@@ -51,6 +52,9 @@ public class MoveBuilder {
             attackIfCanWithoutTurnNearest(attack, enemies);
         } else if (gs.hasEnemy && gs.canAttack) {
             attackBestTarget(gs, attack, enemies);
+        } else if (gs.isNeedChangeLane) {
+            System.out.println("isNeedChangeLane");
+            // moving.goTo();
         } else if (gs.isFriendMinionsAhead) {
             if (!gs.isNearEnemyBase || (nearMinionFriends.size() > 8)) {
                 final Point center = nearMinionFriends.getCenter();
