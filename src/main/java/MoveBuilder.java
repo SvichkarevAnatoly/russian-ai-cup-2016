@@ -14,7 +14,6 @@ public class MoveBuilder {
     public void build() {
         final History history = History.getInstance();
         final GameState gs = history.getGameState();
-        final WizardParams wp = history.getWizardParams();
 
         final Params params = new Params(self);
 
@@ -54,7 +53,13 @@ public class MoveBuilder {
             attackBestTarget(gs, attack, enemies);
         } else if (gs.isNeedChangeLane) {
             System.out.println("isNeedChangeLane");
-            // moving.goTo();
+            if (!globalMoving.hasNextLane()) {
+                final LaneSituation laneSituation = new LaneSituation(world);
+                final LaneType newLane = laneSituation.chooseNewLane();
+                globalMoving.switchLane(newLane);
+            }
+            final Point laneForkPoint = globalMoving.getLaneForkPoint();
+            moving.goTo(laneForkPoint);
         } else if (gs.isFriendMinionsAhead) {
             if (!gs.isNearEnemyBase || (nearMinionFriends.size() > 8)) {
                 final Point center = nearMinionFriends.getCenter();

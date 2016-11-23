@@ -11,6 +11,7 @@ import java.util.Map;
  */
 public class WaypointsByLane {
     private Map<LaneType, Point[]> waypointsByLane;
+    private Point laneFork = new Point(550, M.y(550));
 
     public WaypointsByLane() {
         final double mapSize = GameSingleton.getInstance().getMapSize();
@@ -24,7 +25,6 @@ public class WaypointsByLane {
                 new Point(5 * 400.0D, M.y(5 * 400.0D)),
                 new Point(6 * 400.0D, M.y(6 * 400.0D)),
                 new Point(9.5 * 400.0D, M.y(9.5 * 400.0D)),
-//                new Point(3000, M.y(3000)),
         });
 
         waypointsByLane.put(LaneType.TOP, new Point[]{
@@ -58,5 +58,9 @@ public class WaypointsByLane {
 
     public Point[] get(LaneType laneType) {
         return waypointsByLane.get(laneType);
+    }
+
+    public Point getLaneForkPoint() {
+        return laneFork;
     }
 }

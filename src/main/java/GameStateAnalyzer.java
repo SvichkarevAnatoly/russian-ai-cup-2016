@@ -78,7 +78,28 @@ public class GameStateAnalyzer {
 
     private void initPosition() {
         gameState.isNearEnemyBase = EnemyMiddleTower.isInRangeBase(self);
-//        gameState.isNeedChangeLane =
+
+        initIsNeedChangeLane();
+    }
+
+    private void initIsNeedChangeLane() {
+        final LaneSituation situation = new LaneSituation(world);
+        final History history = History.getInstance();
+        if (history.isEmpty()) {
+            gameState.isNeedChangeLane = false;
+        } else {
+            final GlobalMoving globalMoving = GlobalMoving.getInstance();
+            if (globalMoving.hasNextLane()) {
+                if (situation.chooseNewLane() == globalMoving.getLane()) {
+                    gameState.isNeedChangeLane = false;
+                } else {
+                    gameState.isNeedChangeLane = true;
+                }
+            } else {
+                final LaneType currentLane = globalMoving.getLane();
+                gameState.isNeedChangeLane = situation.isNeedChangeLane(currentLane);
+            }
+        }
     }
 
     private void initEnemy() {
