@@ -13,9 +13,9 @@ public class StateAnalyzer {
         this.move = move;
     }
 
-    public StateShot getStateShot(History history) {
+    public StateShot getStateShot() {
         final GameStateAnalyzer gsa = new GameStateAnalyzer(self, world, game, move);
-        final GameState gameState = gsa.getGameState(history);
+        final GameState gameState = gsa.getGameState();
 
         final WizardParamsAnalyzer wpa = new WizardParamsAnalyzer(self, world, game, move);
         final WizardParams wizardParams = wpa.getWizardParams();

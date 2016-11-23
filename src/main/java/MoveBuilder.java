@@ -6,18 +6,15 @@ public class MoveBuilder {
     private final Game game;
     private final Move move;
 
-    private final History history;
-
-    public MoveBuilder(History history, Wizard self, World world, Game game, Move move) {
+    public MoveBuilder(Wizard self, World world, Game game, Move move) {
         this.self = self;
         this.world = world;
         this.game = game;
         this.move = move;
-
-        this.history = history;
     }
 
     public void build() {
+        final History history = History.getInstance();
         final GameState gs = history.getGameState();
         final Params params = new Params(self);
 

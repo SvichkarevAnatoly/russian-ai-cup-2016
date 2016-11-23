@@ -17,8 +17,8 @@ public class GameStateAnalyzer {
         this.move = move;
     }
 
-    public GameState getGameState(History history) {
-        initSelf(history);
+    public GameState getGameState() {
+        initSelf();
         initPosition();
         initEnemy();
         initFriend();
@@ -26,7 +26,8 @@ public class GameStateAnalyzer {
         return gameState;
     }
 
-    private void initSelf(History history) {
+    private void initSelf() {
+        final History history = History.getInstance();
         if (!initIsNotAlive()) {
             initIsLowHP();
             initCanNotMove(history);

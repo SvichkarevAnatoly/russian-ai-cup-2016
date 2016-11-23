@@ -4,7 +4,17 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+// Singleton
 public class History {
+    private static History instance = new History();
+
+    public static History getInstance() {
+        return instance;
+    }
+
+    private History() {
+    }
+
     private FixedSizeLinkedList<StateShot> states = new FixedSizeLinkedList<>(Const.HISTORY_CAPACITY);
 
     public void add(StateShot stateShot) {

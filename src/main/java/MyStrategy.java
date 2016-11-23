@@ -7,8 +7,6 @@ public final class MyStrategy implements Strategy {
     // DEBUG
     private static int iter = 0;
 
-    private History history = new History();
-
     /**
      * Основной метод стратегии, осуществляющий управление волшебником.
      * Вызывается каждый тик для каждого волшебника.
@@ -23,7 +21,7 @@ public final class MyStrategy implements Strategy {
         System.out.println(iter++);
         initializeStrategy(self, world, game, move);
 
-        final MoveBuilder moveBuilder = new MoveBuilder(history, self, world, game, move);
+        final MoveBuilder moveBuilder = new MoveBuilder(self, world, game, move);
         moveBuilder.build();
     }
 
@@ -35,7 +33,8 @@ public final class MyStrategy implements Strategy {
      */
     private void initializeStrategy(Wizard self, World world, Game game, Move move) {
         final StateAnalyzer stateAnalyzer = new StateAnalyzer(self, world, game, move);
-        final StateShot stateShot = stateAnalyzer.getStateShot(history);
+        final StateShot stateShot = stateAnalyzer.getStateShot();
+        final History history = History.getInstance();
         history.add(stateShot);
     }
 }
