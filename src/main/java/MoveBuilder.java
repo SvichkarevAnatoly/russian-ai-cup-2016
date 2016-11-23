@@ -65,7 +65,7 @@ public class MoveBuilder {
                 final Point center = nearMinionFriends.getCenter();
                 moving.goTo(center);
             }
-        } else if (gs.canBeUnderTowerAttack) { // TODO: по-моему лишняя проверка
+        } else if (gs.canBeUnderTowerAttack) {
             if (gs.canAttack) {
                 final LivingUnit nearest = enemies.getNearest(self);
                 attack.attack(move, nearest);

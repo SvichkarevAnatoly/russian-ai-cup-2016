@@ -90,11 +90,7 @@ public class GameStateAnalyzer {
         } else {
             final GlobalMoving globalMoving = GlobalMoving.getInstance();
             if (globalMoving.hasNextLane()) {
-                if (situation.chooseNewLane() == globalMoving.getLane()) {
-                    gameState.isNeedChangeLane = false;
-                } else {
-                    gameState.isNeedChangeLane = true;
-                }
+                gameState.isNeedChangeLane = situation.chooseNewLane() != globalMoving.getLane();
             } else {
                 final LaneType currentLane = globalMoving.getLane();
                 gameState.isNeedChangeLane = situation.isNeedChangeLane(currentLane);
