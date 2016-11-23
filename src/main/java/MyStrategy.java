@@ -16,8 +16,7 @@ public final class MyStrategy implements Strategy {
     @Override
     public void move(Wizard self, World world, Game game, Move move) {
         // DEBUG
-        System.out.println(Time.getTime());
-        Time.increment();
+        System.out.println(world.getTickIndex());
 
         initializeStrategy(self, world, game, move);
 
