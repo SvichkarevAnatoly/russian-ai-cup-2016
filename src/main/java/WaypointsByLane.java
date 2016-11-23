@@ -28,13 +28,13 @@ public class WaypointsByLane {
         });
 
         waypointsByLane.put(LaneType.TOP, new Point[]{
-                new Point(100.0D, mapSize - 100.0D),
-                new Point(100.0D, mapSize - 400.0D),
-                new Point(200.0D, mapSize - 800.0D),
+                new Point(100.0D, M.y(100.0D)),
+                new Point(100.0D, M.y(400.0D)),
+                new Point(300.0D, M.y(500.0D)),
+                new Point(200.0D, M.y(800.0D)),
                 new Point(200.0D, mapSize * 0.75D),
                 new Point(200.0D, mapSize * 0.5D),
                 new Point(200.0D, mapSize * 0.25D),
-                new Point(200.0D, 200.0D),
                 new Point(mapSize * 0.25D, 200.0D),
                 new Point(mapSize * 0.5D, 200.0D),
                 new Point(mapSize * 0.75D, 200.0D),
@@ -42,13 +42,13 @@ public class WaypointsByLane {
         });
 
         waypointsByLane.put(LaneType.BOTTOM, new Point[]{
-                new Point(100.0D, mapSize - 100.0D),
-                new Point(400.0D, mapSize - 100.0D),
-                new Point(800.0D, mapSize - 200.0D),
-                new Point(mapSize * 0.25D, mapSize - 200.0D),
-                new Point(mapSize * 0.5D, mapSize - 200.0D),
-                new Point(mapSize * 0.75D, mapSize - 200.0D),
-                new Point(mapSize - 200.0D, mapSize - 200.0D),
+                new Point(100.0D, M.y(100.0D)),
+                new Point(400.0D, M.y(100.0D)),
+                new Point(500.0D, M.y(300.0D)),
+                new Point(800.0D, M.y(200.0D)),
+                new Point(mapSize * 0.25D, M.y(200.0D)),
+                new Point(mapSize * 0.5D, M.y(200.0D)),
+                new Point(mapSize * 0.75D, M.y(200.0D)),
                 new Point(mapSize - 200.0D, mapSize * 0.75D),
                 new Point(mapSize - 200.0D, mapSize * 0.5D),
                 new Point(mapSize - 200.0D, mapSize * 0.25D),
