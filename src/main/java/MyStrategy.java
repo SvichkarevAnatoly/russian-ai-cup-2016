@@ -4,9 +4,6 @@ import model.Wizard;
 import model.World;
 
 public final class MyStrategy implements Strategy {
-    // DEBUG
-    private static int iter = 0;
-
     /**
      * Основной метод стратегии, осуществляющий управление волшебником.
      * Вызывается каждый тик для каждого волшебника.
@@ -18,7 +15,10 @@ public final class MyStrategy implements Strategy {
      */
     @Override
     public void move(Wizard self, World world, Game game, Move move) {
-        System.out.println(iter++);
+        // DEBUG
+        System.out.println(Time.getTime());
+        Time.increment();
+
         initializeStrategy(self, world, game, move);
 
         final MoveBuilder moveBuilder = new MoveBuilder(self, world, game, move);
