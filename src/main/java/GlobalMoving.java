@@ -1,4 +1,3 @@
-import model.Game;
 import model.LaneType;
 import model.Wizard;
 
@@ -6,17 +5,15 @@ public class GlobalMoving {
     private static final double WAYPOINT_RADIUS = 100.0D;
 
     private Wizard self;
-    private Game game;
 
     private WaypointsByLane waypointsByLane;
     private LaneType lane;
 
-    public GlobalMoving(Wizard self, Game game) {
+    public GlobalMoving(Wizard self) {
         this.self = self;
-        this.game = game;
 
         this.lane = LaneType.MIDDLE;
-        waypointsByLane = new WaypointsByLane(game.getMapSize());
+        waypointsByLane = new WaypointsByLane();
     }
 
     /**

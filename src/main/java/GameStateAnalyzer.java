@@ -5,15 +5,13 @@ import java.util.List;
 public class GameStateAnalyzer {
     private Wizard self;
     private World world;
-    private Game game;
     private Move move;
 
     private GameState gameState = new GameState();
 
-    public GameStateAnalyzer(Wizard self, World world, Game game, Move move) {
+    public GameStateAnalyzer(Wizard self, World world, Move move) {
         this.self = self;
         this.world = world;
-        this.game = game;
         this.move = move;
     }
 
@@ -98,7 +96,7 @@ public class GameStateAnalyzer {
         if (nearestEnemy != null) {
             gameState.hasEnemy = true;
             gameState.isOrkAtWarningDistance = enemies.isOrkAtWarningDistance(self);
-            final Attack attack = new Attack(self, game);
+            final Attack attack = new Attack(self);
             if (attack.canAttack(nearestEnemy)) {
                 gameState.canAttack = true;
             }

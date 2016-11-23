@@ -21,7 +21,7 @@ public final class MyStrategy implements Strategy {
 
         initializeStrategy(self, world, game, move);
 
-        final MoveBuilder moveBuilder = new MoveBuilder(self, world, game, move);
+        final MoveBuilder moveBuilder = new MoveBuilder(self, world, move);
         moveBuilder.build();
     }
 
@@ -32,7 +32,9 @@ public final class MyStrategy implements Strategy {
      * случайных чисел значением, полученным от симулятора игры.
      */
     private void initializeStrategy(Wizard self, World world, Game game, Move move) {
-        final StateAnalyzer stateAnalyzer = new StateAnalyzer(self, world, game, move);
+        GameSingleton.setInstance(game);
+
+        final StateAnalyzer stateAnalyzer = new StateAnalyzer(self, world, move);
         final StateShot stateShot = stateAnalyzer.getStateShot();
         final History history = History.getInstance();
         history.add(stateShot);

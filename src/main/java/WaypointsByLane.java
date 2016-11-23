@@ -12,7 +12,8 @@ import java.util.Map;
 public class WaypointsByLane {
     private Map<LaneType, Point[]> waypointsByLane;
 
-    public WaypointsByLane(double mapSize) {
+    public WaypointsByLane() {
+        final double mapSize = GameSingleton.getInstance().getMapSize();
         waypointsByLane = new EnumMap<>(LaneType.class);
 
         waypointsByLane.put(LaneType.MIDDLE, new Point[]{

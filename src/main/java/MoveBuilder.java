@@ -3,13 +3,11 @@ import model.*;
 public class MoveBuilder {
     private final Wizard self;
     private final World world;
-    private final Game game;
     private final Move move;
 
-    public MoveBuilder(Wizard self, World world, Game game, Move move) {
+    public MoveBuilder(Wizard self, World world, Move move) {
         this.self = self;
         this.world = world;
-        this.game = game;
         this.move = move;
     }
 
@@ -18,14 +16,14 @@ public class MoveBuilder {
         final GameState gs = history.getGameState();
         final Params params = new Params(self);
 
-        final GlobalMoving globalMoving = new GlobalMoving(self, game);
-        final Moving moving = new Moving(self, move, game, gs);
+        final GlobalMoving globalMoving = new GlobalMoving(self);
+        final Moving moving = new Moving(self, move, gs);
 
         if (gs.isNotAlive){
             return;
         }
 
-        final Attack attack = new Attack(self, game);
+        final Attack attack = new Attack(self);
 
         final Enemies enemies = new EnemiesInRange(world, params.enemy, self);
         final EnemyMinionsInRange enemyMinions = new EnemyMinionsInRange(world, params.enemy, self);

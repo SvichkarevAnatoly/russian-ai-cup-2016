@@ -3,21 +3,19 @@ import model.*;
 public class StateAnalyzer {
     private Wizard self;
     private World world;
-    private Game game;
     private Move move;
 
-    public StateAnalyzer(Wizard self, World world, Game game, Move move) {
+    public StateAnalyzer(Wizard self, World world, Move move) {
         this.self = self;
         this.world = world;
-        this.game = game;
         this.move = move;
     }
 
     public StateShot getStateShot() {
-        final GameStateAnalyzer gsa = new GameStateAnalyzer(self, world, game, move);
+        final GameStateAnalyzer gsa = new GameStateAnalyzer(self, world, move);
         final GameState gameState = gsa.getGameState();
 
-        final WizardParamsAnalyzer wpa = new WizardParamsAnalyzer(self, world, game, move);
+        final WizardParamsAnalyzer wpa = new WizardParamsAnalyzer(self);
         final WizardParams wizardParams = wpa.getWizardParams();
 
         return new StateShot(gameState, wizardParams);

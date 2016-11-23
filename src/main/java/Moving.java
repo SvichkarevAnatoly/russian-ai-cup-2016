@@ -7,7 +7,7 @@ import java.util.Random;
 public class Moving {
     private final Wizard self;
     private final Move move;
-    private final Game game;
+    private final Game game = GameSingleton.getInstance();
 
     private final GameState gameState;
 
@@ -15,10 +15,9 @@ public class Moving {
     private static int callTimes = 0;
     private static boolean isLeft;
 
-    public Moving(Wizard self, Move move, Game game, GameState gameState) {
+    public Moving(Wizard self, Move move, GameState gameState) {
         this.self = self;
         this.move = move;
-        this.game = game;
         this.gameState = gameState;
     }
 
@@ -50,20 +49,6 @@ public class Moving {
         move.setTurn(angle);
         move.setSpeed(-game.getWizardBackwardSpeed());
         gameState.isMoving = true;
-    }
-
-    public void goSomewhere() {
-        if (random.nextBoolean()) {
-            move.setStrafeSpeed(game.getWizardStrafeSpeed());
-        } else {
-            move.setStrafeSpeed(-game.getWizardStrafeSpeed());
-        }
-
-        if (random.nextBoolean()) {
-            move.setSpeed(game.getWizardForwardSpeed());
-        } else {
-            move.setSpeed(-game.getWizardBackwardSpeed());
-        }
     }
 
     public void goStrafe() {
