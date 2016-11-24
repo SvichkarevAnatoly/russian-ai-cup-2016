@@ -30,7 +30,7 @@ public class WaypointsByLane {
         waypointsByLane.put(LaneType.TOP, new Point[]{
                 new Point(100.0D, M.y(100.0D)),
                 new Point(100.0D, M.y(400.0D)),
-                new Point(300.0D, M.y(500.0D)),
+                new Point(500.0D, M.y(300.0D)),
                 new Point(200.0D, M.y(800.0D)),
                 new Point(200.0D, mapSize * 0.75D),
                 new Point(200.0D, mapSize * 0.5D),
@@ -44,7 +44,7 @@ public class WaypointsByLane {
         waypointsByLane.put(LaneType.BOTTOM, new Point[]{
                 new Point(100.0D, M.y(100.0D)),
                 new Point(400.0D, M.y(100.0D)),
-                new Point(500.0D, M.y(300.0D)),
+                new Point(300.0D, M.y(500.0D)),
                 new Point(800.0D, M.y(200.0D)),
                 new Point(mapSize * 0.25D, M.y(200.0D)),
                 new Point(mapSize * 0.5D, M.y(200.0D)),

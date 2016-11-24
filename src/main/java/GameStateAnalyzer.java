@@ -79,7 +79,23 @@ public class GameStateAnalyzer {
     private void initPosition() {
         gameState.isNearEnemyBase = EnemyMiddleTower.isInRangeBase(self);
 
+        initIsBaseUnderAttack();
         initIsNeedChangeLane();
+    }
+
+    private void initIsBaseUnderAttack() {
+        final Faction friendFaction = new Params(this.self).self;
+        final FriendBase base = new FriendBase(world, friendFaction);
+        gameState.baseLife = base.getLife();
+        final History history = History.getInstance();
+        if (history.size() < 2) {
+            return;
+        }
+
+        final GameState preGameState = history.getGameState();
+        if (gameState.baseLife < preGameState.baseLife) {
+            gameState.isBaseUnderAttack = true;
+        }
     }
 
     private void initIsNeedChangeLane() {

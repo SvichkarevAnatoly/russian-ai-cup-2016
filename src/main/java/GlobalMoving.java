@@ -86,8 +86,14 @@ public class GlobalMoving {
         return firstWaypoint;
     }
 
-    public Point getLaneForkPoint() {
-        return waypointsByLane.getLaneForkPoint();
+    public Point getLaneForkPoint(Wizard self) {
+        final Point previousWaypoint = getPreviousWaypoint(self);
+        final Point laneForkPoint = waypointsByLane.getLaneForkPoint();
+        if (previousWaypoint.getDistanceTo(self) < laneForkPoint.getDistanceTo(self)) {
+            return previousWaypoint;
+        } else {
+            return laneForkPoint;
+        }
     }
 
     public boolean hasNextLane() {

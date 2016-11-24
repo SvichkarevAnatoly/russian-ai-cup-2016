@@ -25,4 +25,7 @@ public class GameState {
     public boolean isOrkAtWarningDistance;
 
     public boolean isNeedChangeLane;
+
+    public int baseLife = 100;
+    public boolean isBaseUnderAttack;
 }

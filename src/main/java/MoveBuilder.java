@@ -46,20 +46,20 @@ public class MoveBuilder {
             } else { // don't know how to react for friend fire
                 moving.goToNextWaypoint(nextWaypoint);
             }
-        } else if (gs.isOrkAtWarningDistance) {
-            moving.goBackward(previousWaypoint);
-            attackIfCanWithoutTurnNearest(attack, enemies);
-        } else if (gs.hasEnemy && gs.canAttack) {
-            attackBestTarget(gs, attack, enemies);
-        } else if (gs.isNeedChangeLane) {
+        } else if (gs.isNeedChangeLane || gs.isBaseUnderAttack) {
             System.out.println("isNeedChangeLane");
             if (!globalMoving.hasNextLane()) {
                 final LaneSituation laneSituation = new LaneSituation(world);
                 final LaneType newLane = laneSituation.chooseNewLane();
                 globalMoving.switchLane(newLane);
             }
-            final Point laneForkPoint = globalMoving.getLaneForkPoint();
+            final Point laneForkPoint = globalMoving.getLaneForkPoint(self);
             moving.goTo(laneForkPoint);
+        } else if (gs.isOrkAtWarningDistance) {
+            moving.goBackward(previousWaypoint);
+            attackIfCanWithoutTurnNearest(attack, enemies);
+        } else if (gs.hasEnemy && gs.canAttack) {
+            attackBestTarget(gs, attack, enemies);
         } else if (gs.isFriendMinionsAhead) {
             if (!gs.isNearEnemyBase || (nearMinionFriends.size() > 8)) {
                 final Point center = nearMinionFriends.getCenter();

@@ -1,6 +1,8 @@
 import model.LaneType;
 import model.World;
 
+import java.util.ArrayList;
+
 public class LaneSituation {
     private final World world;
 
@@ -25,11 +27,12 @@ public class LaneSituation {
 
     public LaneType chooseNewLane() {
         final FriendTowers friendTowers = new FriendTowers(world);
+        final ArrayList<LaneType> badLaneTypes = new ArrayList<>();
         for (LaneType laneType : LaneType.values()) {
             if (friendTowers.countOnLane(laneType) == 0) {
-                return laneType;
+                badLaneTypes.add(laneType);
             }
         }
-        return LaneType.MIDDLE;
+        return badLaneTypes.get(0);
     }
 }
