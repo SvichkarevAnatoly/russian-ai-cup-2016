@@ -9,7 +9,7 @@ public class NearMinionFriends extends MinionFriends {
     public NearMinionFriends(World world, Faction friendFaction, Wizard self) {
         super(world, friendFaction);
         for (LivingUnit minionFriend : minionFriends) {
-            if (minionFriend.getDistanceTo(self) <= Const.NEAR_MINION_DIST) {
+            if (minionFriend.getDistanceTo(self) <= self.getVisionRange()) {
                 nearMinionFriends.add(minionFriend);
             }
         }

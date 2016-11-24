@@ -7,6 +7,5 @@ public class Const {
     public static final double WARNING_DIST_TO_ORC = 15.0D;
     public static final int WAS_ATTACK_TIME = 50;
     public static final int HISTORY_CAPACITY = 100;
-    public static final double NEAR_MINION_DIST = 300.0D;
     public static final double WAYPOINT_RADIUS = 100.0D;
 }
