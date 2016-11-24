@@ -10,16 +10,21 @@ import java.util.Map;
  * Если осталось мало жизненной энергии, отступаем к предыдущей точке.
  */
 public class WaypointsByLane {
+    private static final int LANE_FORK_POINT_INDEX = 4;
+
     private Map<LaneType, Point[]> waypointsByLane;
-    private Point laneFork = new Point(550, M.y(550));
 
     public WaypointsByLane() {
         final double mapSize = GameSingleton.getInstance().getMapSize();
         waypointsByLane = new EnumMap<>(LaneType.class);
 
         waypointsByLane.put(LaneType.MIDDLE, new Point[]{
-                new Point(200, M.y(600)),
-                new Point(990, M.y(1200.0D)),
+                new Point(50.0D, M.y(50.0D)),
+                new Point(200, M.y(400)),
+                new Point(250, M.y(600)),
+                new Point(400, M.y(250)),
+                new Point(550, M.y(550)),
+                new Point(990, M.y(1180.0D)),
                 new Point(4.45 * 400.0D, M.y(3.95 * 400.0D)),
                 new Point(4.6 * 400.0D, M.y(4.25 * 400.0D)),
                 new Point(5 * 400.0D, M.y(5 * 400.0D)),
@@ -28,10 +33,12 @@ public class WaypointsByLane {
         });
 
         waypointsByLane.put(LaneType.TOP, new Point[]{
+                new Point(50.0D, M.y(50.0D)),
                 new Point(100.0D, M.y(100.0D)),
-                new Point(100.0D, M.y(400.0D)),
-                new Point(500.0D, M.y(300.0D)),
-                new Point(200.0D, M.y(800.0D)),
+                new Point(400.0D, M.y(230.0D)),
+                new Point(600.0D, M.y(300.0D)),
+                new Point(550, M.y(550)),
+                new Point(300, M.y(700)),
                 new Point(200.0D, mapSize * 0.75D),
                 new Point(200.0D, mapSize * 0.5D),
                 new Point(200.0D, mapSize * 0.25D),
@@ -42,10 +49,12 @@ public class WaypointsByLane {
         });
 
         waypointsByLane.put(LaneType.BOTTOM, new Point[]{
+                new Point(50.0D, M.y(50.0D)),
                 new Point(100.0D, M.y(100.0D)),
-                new Point(400.0D, M.y(100.0D)),
-                new Point(300.0D, M.y(500.0D)),
-                new Point(800.0D, M.y(200.0D)),
+                new Point(230.0D, M.y(400.0D)),
+                new Point(300.0D, M.y(600.0D)),
+                new Point(550, M.y(550)),
+                new Point(700, M.y(300)),
                 new Point(mapSize * 0.25D, M.y(200.0D)),
                 new Point(mapSize * 0.5D, M.y(200.0D)),
                 new Point(mapSize * 0.75D, M.y(200.0D)),
@@ -60,7 +69,7 @@ public class WaypointsByLane {
         return waypointsByLane.get(laneType);
     }
 
-    public Point getLaneForkPoint() {
-        return laneFork;
+    public int getLaneForkPointIndex() {
+        return LANE_FORK_POINT_INDEX;
     }
 }

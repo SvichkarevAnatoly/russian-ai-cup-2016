@@ -21,6 +21,7 @@ public class GameState {
     public boolean isMoving;
     public boolean isOnlyTurning;
 
+    public boolean isNearFriendBase;
     public boolean isNearEnemyBase;
     public boolean isOrkAtWarningDistance;
 

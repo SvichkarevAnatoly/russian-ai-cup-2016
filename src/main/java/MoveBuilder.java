@@ -25,25 +25,25 @@ public class MoveBuilder {
         final Enemies enemies = new EnemiesInRange(world, params.enemy, self);
         final NearMinionFriends nearMinionFriends = new NearMinionFriends(world, params.self, self);
 
-        final Point previousWaypoint = globalMoving.getPreviousWaypoint(self);
-        final Point nextWaypoint = globalMoving.getNextWaypoint(self);
-
         if (gs.isNotAlive){
             return;
         }
-
+        System.out.println("x=" + self.getX() + " y=" + self.getY());
         if(gs.canNotMove) {
             moving.goStrafe();
             attackIfCanWithoutTurnNearest(attack, enemies);
         } else if (gs.isLowHP) {
+            final Point previousWaypoint = globalMoving.getLaneForkPoint(self);
             moving.goTo(previousWaypoint);
             attackIfCanWithoutTurnNearest(attack, enemies);
         } else if (gs.wasUnderAttack) {
             final LivingUnit lastEnemy = history.getLastEnemy();
             if (lastEnemy != null) { // not enemy unit fire
+                final Point previousWaypoint = globalMoving.getLaneForkPoint(self);
                 moving.goBackward(previousWaypoint);
                 attackIfCanWithoutTurnNearest(attack, enemies);
             } else { // don't know how to react for friend fire
+                final Point nextWaypoint = globalMoving.getNextWaypoint(self);
                 moving.goToNextWaypoint(nextWaypoint);
             }
         } else if (gs.isNeedChangeLane || gs.isBaseUnderAttack) {
@@ -56,13 +56,15 @@ public class MoveBuilder {
             final Point laneForkPoint = globalMoving.getLaneForkPoint(self);
             moving.goTo(laneForkPoint);
         } else if (gs.isOrkAtWarningDistance) {
+            final Point previousWaypoint = globalMoving.getLaneForkPoint(self);
             moving.goBackward(previousWaypoint);
             attackIfCanWithoutTurnNearest(attack, enemies);
         } else if (gs.hasEnemy && gs.canAttack) {
             attackBestTarget(gs, attack, enemies);
-        } else if (gs.isFriendMinionsAhead) {
+        } else if (gs.isFriendMinionsAhead && !gs.isNearFriendBase) {
             if (!gs.isNearEnemyBase || (nearMinionFriends.size() > 8)) {
                 final Point center = nearMinionFriends.getCenter();
+                globalMoving.setPastWaypointToNearest(center);
                 moving.goTo(center);
             }
         } else if (gs.canBeUnderTowerAttack) {
@@ -72,6 +74,7 @@ public class MoveBuilder {
             }
         } else {
             // Если нет других действий, просто продвигаемся вперёд.
+            final Point nextWaypoint = globalMoving.getNextWaypoint(self);
             moving.goToNextWaypoint(nextWaypoint);
         }
     }

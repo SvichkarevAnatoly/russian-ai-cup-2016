@@ -77,10 +77,21 @@ public class GameStateAnalyzer {
     }
 
     private void initPosition() {
-        gameState.isNearEnemyBase = EnemyMiddleTower.isInRangeBase(self);
+        initIsNearEnemyBase();
+        initIsNearFriendBase();
 
         initIsBaseUnderAttack();
         initIsNeedChangeLane();
+    }
+
+    private void initIsNearEnemyBase() {
+        gameState.isNearEnemyBase = EnemyMiddleTower.isInRangeBase(self);
+    }
+
+    private void initIsNearFriendBase() {
+        final Params params = new Params(self);
+        final FriendBase friendBase = new FriendBase(world, params.self);
+        gameState.isNearFriendBase = friendBase.isNear(self);
     }
 
     private void initIsBaseUnderAttack() {
@@ -88,7 +99,7 @@ public class GameStateAnalyzer {
         final FriendBase base = new FriendBase(world, friendFaction);
         gameState.baseLife = base.getLife();
         final History history = History.getInstance();
-        if (history.size() < 2) {
+        if (history.isEmpty()) {
             return;
         }
 
@@ -150,6 +161,7 @@ public class GameStateAnalyzer {
     private boolean initIsNotAlive() {
         if (self.getLife() == 0) {
             gameState.isNotAlive = true;
+            GlobalMoving.getInstance().resetWaypoint();
         }
         return gameState.isNotAlive;
     }

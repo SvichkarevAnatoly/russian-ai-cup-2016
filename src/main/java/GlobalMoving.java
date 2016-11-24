@@ -10,6 +10,8 @@ public class GlobalMoving {
     }
 
     private WaypointsByLane waypointsByLane;
+    private int pastWaypointIndex = -1;
+
     private LaneType currentLane;
     private LaneType nextLane;
 
@@ -27,40 +29,28 @@ public class GlobalMoving {
     }
 
     /**
-     * Данный метод предполагает, что все ключевые точки на линии упорядочены по уменьшению дистанции до последней
-     * ключевой точки. Перебирая их по порядку, находим первую попавшуюся точку, которая находится ближе к последней
-     * точке на линии, чем волшебник. Это и будет следующей ключевой точкой.
-     * <p>
      * Дополнительно проверяем, не находится ли волшебник достаточно близко к какой-либо из ключевых точек. Если это
      * так, то мы сразу возвращаем следующую ключевую точку.
      */
     public Point getNextWaypoint(Wizard self) {
-        if (nextLane != null) {
-            final Point laneForkPoint = waypointsByLane.getLaneForkPoint();
-            if (laneForkPoint.getDistanceTo(self) <= Const.WAYPOINT_RADIUS) {
-                currentLane = nextLane;
-                nextLane = null;
-            }
-            return laneForkPoint;
-        } else {
-            final Point[] waypoints = waypointsByLane.get(currentLane);
-            int lastWaypointIndex = waypoints.length - 1;
-            Point lastWaypoint = waypoints[lastWaypointIndex];
+        final Point[] waypoints = waypointsByLane.get(currentLane);
+        int minDistIndex = waypoints.length - 1;
+        double minDist = waypoints[minDistIndex].getDistanceTo(self);
+        for (int i = waypoints.length - 2; i > pastWaypointIndex; --i) {
+            Point waypoint = waypoints[i];
 
-            for (int waypointIndex = 0; waypointIndex < lastWaypointIndex; ++waypointIndex) {
-                Point waypoint = waypoints[waypointIndex];
-
-                if (waypoint.getDistanceTo(self) <= Const.WAYPOINT_RADIUS) {
-                    return waypoints[waypointIndex + 1];
-                }
-
-                if (lastWaypoint.getDistanceTo(waypoint) < lastWaypoint.getDistanceTo(self)) {
-                    return waypoint;
-                }
+            if (waypoint.getDistanceTo(self) <= Const.WAYPOINT_RADIUS) {
+                pastWaypointIndex = i;
+                return waypoints[i + 1];
             }
 
-            return lastWaypoint;
+            if (waypoint.getDistanceTo(self) <= minDist) {
+                minDist = waypoint.getDistanceTo(self);
+                minDistIndex = i;
+            }
         }
+
+        return waypoints[minDistIndex];
     }
 
     /**
@@ -69,34 +59,53 @@ public class GlobalMoving {
      */
     public Point getPreviousWaypoint(Wizard self) {
         final Point[] waypoints = waypointsByLane.get(currentLane);
-        Point firstWaypoint = waypoints[0];
+        int minDistIndex = 0;
+        double minDist = waypoints[minDistIndex].getDistanceTo(self);
 
-        for (int waypointIndex = waypoints.length - 1; waypointIndex > 0; --waypointIndex) {
-            Point waypoint = waypoints[waypointIndex];
+        for (int i = 1; i <= pastWaypointIndex; i++) {
+            Point waypoint = waypoints[i];
 
             if (waypoint.getDistanceTo(self) <= Const.WAYPOINT_RADIUS) {
-                return waypoints[waypointIndex - 1];
+                pastWaypointIndex = i - 1;
+                return waypoints[i - 1];
             }
 
-            if (firstWaypoint.getDistanceTo(waypoint) < firstWaypoint.getDistanceTo(self)) {
-                return waypoint;
+            if (waypoint.getDistanceTo(self) <= minDist) {
+                minDist = waypoint.getDistanceTo(self);
+                minDistIndex = i;
             }
         }
 
-        return firstWaypoint;
+        return waypoints[minDistIndex];
     }
 
     public Point getLaneForkPoint(Wizard self) {
-        final Point previousWaypoint = getPreviousWaypoint(self);
-        final Point laneForkPoint = waypointsByLane.getLaneForkPoint();
-        if (previousWaypoint.getDistanceTo(self) < laneForkPoint.getDistanceTo(self)) {
-            return previousWaypoint;
-        } else {
-            return laneForkPoint;
+        if (nextLane != null && pastWaypointIndex + 1 == waypointsByLane.getLaneForkPointIndex()) {
+            currentLane = nextLane;
+            nextLane = null;
         }
+        return getPreviousWaypoint(self);
     }
 
     public boolean hasNextLane() {
         return nextLane != null;
+    }
+
+    public void resetWaypoint() {
+        pastWaypointIndex = 0;
+    }
+
+    public void setPastWaypointToNearest(Point point) {
+        final Point[] waypoints = waypointsByLane.get(currentLane);
+        int minDistIndex = waypoints.length - 1;
+        double minDist = waypoints[minDistIndex].getDistanceTo(point);
+        for (int i = waypoints.length - 2; i > pastWaypointIndex; --i) {
+            Point waypoint = waypoints[i];
+            if (waypoint.getDistanceTo(point) <= minDist) {
+                minDist = waypoint.getDistanceTo(point);
+                minDistIndex = i;
+            }
+        }
+        pastWaypointIndex = minDistIndex - 1;
     }
 }

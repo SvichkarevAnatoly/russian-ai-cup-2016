@@ -1,7 +1,4 @@
-import model.Building;
-import model.BuildingType;
-import model.Faction;
-import model.World;
+import model.*;
 
 public class FriendBase {
     private Building base;
@@ -21,5 +18,14 @@ public class FriendBase {
             return base.getLife();
         }
         return -1;
+    }
+
+    public boolean isNear(Wizard self) {
+        final double baseDistance = getBaseDistance(self);
+        return baseDistance <= Const.DIST_TO_FRIEND_BASE_TO_SWITCH_BEHAVIOUR;
+    }
+
+    private double getBaseDistance(Wizard self) {
+        return base.getDistanceTo(self);
     }
 }
