@@ -92,7 +92,7 @@ public class GlobalMoving {
     }
 
     public void resetWaypoint() {
-        pastWaypointIndex = 0;
+        pastWaypointIndex = -1;
     }
 
     public void setPastWaypointToNearest(Point point) {
