@@ -25,8 +25,6 @@ public class WaypointsByLane {
                 new Point(400, M.y(250)),
                 new Point(550, M.y(550)),
                 new Point(990, M.y(1180.0D)),
-                new Point(4.45 * 400.0D, M.y(3.95 * 400.0D)),
-                new Point(5 * 400.0D, M.y(5 * 400.0D)),
                 new Point(6 * 400.0D, M.y(6 * 400.0D)),
                 new Point(9.5 * 400.0D, M.y(9.5 * 400.0D)),
         });
