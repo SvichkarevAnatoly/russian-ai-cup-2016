@@ -1,4 +1,7 @@
+import model.Building;
+import model.BuildingType;
 import model.Wizard;
+import model.World;
 
 public class EnemyMiddleTower {
     public static final Point[] towers =
@@ -21,7 +24,18 @@ public class EnemyMiddleTower {
         return false;
     }
 
-    public static boolean isInRangeBase(Wizard self) {
+    public static boolean isInRangeBase(Wizard self, World world) {
+        final Params params = new Params(self);
+        final Building[] buildings = world.getBuildings();
+        for (Building building : buildings) {
+            if (building.getType() == BuildingType.FACTION_BASE
+                    && building.getFaction() == params.enemy) {
+                final double enemyBaseLife = GameSingleton.getInstance().getFactionBaseLife();
+                if (building.getLife() < Const.LOW_HP_ENEMY_BASE_FACTOR * enemyBaseLife){
+                    return false;
+                }
+            }
+        }
         return towers[2].getDistanceTo(self) <= Const.WARNING_DIST_TO_ENEMY_BASE;
     }
 }

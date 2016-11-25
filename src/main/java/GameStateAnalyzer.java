@@ -85,7 +85,7 @@ public class GameStateAnalyzer {
     }
 
     private void initIsNearEnemyBase() {
-        gameState.isNearEnemyBase = EnemyMiddleTower.isInRangeBase(self);
+        gameState.isNearEnemyBase = EnemyMiddleTower.isInRangeBase(self, world);
     }
 
     private void initIsNearFriendBase() {
